@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:layout_height="22dp">
+    <TextView
+        android:id="@+id/tvKey"
+        android:layout_width="63dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="#999999"
+        android:textColor="@color/white"
+        android:text="充值详情"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/tvw_one"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="#64afe6"
+        android:layout_height="match_parent"
+        android:text="剩余水量"
+        android:textSize="14sp" />
+    <TextView
+        android:layout_width="3dp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:layout_height="match_parent"
+        android:text=";"
+        android:textSize="14sp" />
+    <TextView
+        android:id="@+id/tvw_two"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:gravity="center|left"
+        android:textColor="#e6437a"
+        android:layout_height="match_parent"
+        android:text="剩余电量"
+        android:textSize="14sp" />
+</LinearLayout>

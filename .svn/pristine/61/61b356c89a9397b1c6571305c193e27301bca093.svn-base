@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="jcore-1.1.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/cn.jiguang.sdk/jcore/1.1.1/jars/libs/jcore-android_v1.1.1.jar!/" />
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/cn.jiguang.sdk/jcore/1.1.1/res" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/cn.jiguang.sdk/jcore/1.1.1/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/cn.jiguang.sdk/jcore/1.1.1/8778be381807c654f77de861c5e3c6bb09a7a4fc/jcore-1.1.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

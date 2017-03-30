@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@color/titlebar_green"
+        android:orientation="horizontal"
+        android:layout_height="22dp">
+        <TextView
+            android:layout_width="63dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="充值时间"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tvw_time"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center|left"
+            android:textColor="@color/white"
+            android:layout_height="match_parent"
+            android:text="2017年4月1日 12 11:11"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:layout_marginTop="3dp"
+            android:layout_marginLeft="12dp"
+            android:layout_height="22dp">
+            <TextView
+                android:id="@+id/tvKey"
+                android:layout_width="63dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:background="#999999"
+                android:textColor="@color/white"
+                android:text="充值详情"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tvw_one_recharge"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="#64afe6"
+                android:layout_height="match_parent"
+                android:text="充值水量"
+                android:textSize="14sp" />
+            <TextView
+                android:layout_width="3dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:layout_height="match_parent"
+                android:text=";"
+                android:textSize="14sp" />
+            <TextView
+                android:id="@+id/tvw_two_recharge"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:textColor="#e6437a"
+                android:layout_height="match_parent"
+                android:text="充值电量"
+                android:textSize="14sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:layout_marginTop="3dp"
+            android:layout_marginLeft="12dp"
+            android:layout_height="22dp">
+            <TextView
+                android:layout_width="63dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:background="#999999"
+                android:textColor="@color/white"
+                android:text="剩余水电"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tvw_one_remain"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="#64afe6"
+                android:layout_height="match_parent"
+                android:text="剩余水量"
+                android:textSize="14sp" />
+            <TextView
+                android:layout_width="3dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:layout_height="match_parent"
+                android:text=";"
+                android:textSize="14sp" />
+            <TextView
+                android:id="@+id/tvw_two_remain"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:textColor="#e6437a"
+                android:layout_height="match_parent"
+                android:text="剩余电量"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,61 @@
+package com.automic.app.activity;
+
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.widget.TextView;
+
+import com.automic.app.R;
+
+/**
+ * Created by qulus on 2017/3/29 0029.
+ */
+
+public class DeviceStatusActivity extends BaseActivity {
+
+    private TextView m_rtuTitle ;
+    private TextView m_rtuNo ;
+    private TextView m_rtuFactory ;
+    private TextView m_rtuModel ;
+    private TextView m_rtuFaultInfo ;
+
+    private TextView m_flowMeterTitle ;
+    private TextView m_flowMeterNo ;
+    private TextView m_flowMeterFactory ;
+    private TextView m_flowMeterModel ;
+    private TextView m_flowMeterFaultInfo ;
+
+    private TextView m_electMeterTitle ;
+    private TextView m_electMeterNo ;
+    private TextView m_electMeterFactory ;
+    private TextView m_electMeterModel ;
+    private TextView m_electMeterFaultInfo ;
+
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_devicestatus);
+        //setupView();
+    }
+
+    private void setupView() {
+        m_rtuTitle = (TextView) findViewById(R.id.ds_rtuTitle) ;
+        m_rtuNo = (TextView) findViewById(R.id.ds_rtuNo) ;
+        m_rtuFactory = (TextView) findViewById(R.id.ds_rtuFactures) ;
+        m_rtuModel = (TextView) findViewById(R.id.ds_rtuModel) ;
+        m_rtuFaultInfo = (TextView) findViewById(R.id.ds_rtuFaultInfo) ;
+
+        m_flowMeterTitle = (TextView) findViewById(R.id.ds_flowMeterTitle) ;
+        m_flowMeterNo = (TextView) findViewById(R.id.ds_flowMeterNo) ;
+        m_flowMeterFactory = (TextView) findViewById(R.id.ds_flowMeterFactures) ;
+        m_flowMeterModel = (TextView) findViewById(R.id.ds_flowMeterModel) ;
+        m_flowMeterFaultInfo = (TextView) findViewById(R.id.ds_flowMeterFaultInfo) ;
+
+        m_electMeterTitle = (TextView) findViewById(R.id.ds_electMeterTitle) ;
+        m_electMeterNo = (TextView) findViewById(R.id.ds_electMeterNo) ;
+        m_electMeterFactory = (TextView) findViewById(R.id.ds_electMeterFactures) ;
+        m_electMeterModel = (TextView) findViewById(R.id.ds_electMeterModel) ;
+        m_electMeterFaultInfo = (TextView) findViewById(R.id.ds_electMeterFaultInfo) ;
+
+    }
+}

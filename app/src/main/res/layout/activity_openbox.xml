@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+<TextView
+    android:layout_width="match_parent"
+    android:text="开箱记录"
+    android:id="@+id/tvw_openbox"
+    android:layout_height="match_parent" />
+    <com.automic.app.view.pullpushview.PullToRefreshLayout
+        android:id="@+id/pl_refresh_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tvw_openbox"
+        android:orientation="vertical">
+        <include layout="@layout/refresh_head"></include>
+        <com.automic.app.view.pullpushview.PullableListView
+            android:id="@+id/lv_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/general_list_back_color"
+            android:cacheColorHint="@color/general_list_back_color"
+            android:descendantFocusability="blocksDescendants"
+            android:divider="#F3F3F3"
+            android:dividerHeight="5dip"
+            android:fastScrollEnabled="true"
+            android:listSelector="@android:color/transparent"
+            android:scrollbars="vertical">
+
+        </com.automic.app.view.pullpushview.PullableListView>
+        <include layout="@layout/load_more"></include>
+    </com.automic.app.view.pullpushview.PullToRefreshLayout>
+</LinearLayout>

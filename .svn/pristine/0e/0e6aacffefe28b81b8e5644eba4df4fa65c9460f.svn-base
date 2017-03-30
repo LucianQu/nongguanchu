@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "E:\\as_project_20170220\\AgriculturalIrrigation\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi\\ic_launcher.png",
+        "source": "E:\\as_project_20170220\\AgriculturalIrrigation\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "E:\\as_project_20170220\\AgriculturalIrrigation\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi\\jpush_notification_icon.png",
+        "source": "E:\\as_project_20170220\\AgriculturalIrrigation\\app\\src\\main\\res\\mipmap-xhdpi\\jpush_notification_icon.png"
+    }
+]

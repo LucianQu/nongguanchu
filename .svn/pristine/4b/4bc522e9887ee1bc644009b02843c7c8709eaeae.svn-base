@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\AppData\Local\Android\Sdk\extras\android\m2repository\com\android\support\support-annotations\23.4.0\support-annotations-23.4.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ffbe55fdb2bb456b1485831706a9eac3300bb6b8">
+        <dex dex="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\pre-dexed\debug\support-annotations-23.4.0_eff36cb3dd5776bcc7dfe63d3c4af3d7d0b02909.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="4459990db9ce306b19ab5fb62b30c2f85d54ed19">
+        <dex dex="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\pre-dexed\debug\instant-run_54777c437af17d166b473fc7727a4a3096acbd3d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\exploded-aar\cn.jiguang.sdk\jpush\3.0.3\jars\libs\jpush-android_v3.0.3.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7da1fe9424ad39b3e138685e798569b7e404e8df">
+        <dex dex="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\pre-dexed\debug\jpush-android_v3.0.3_f0dfd1737cf3ee5b00ac28e39b363c1a77f10401.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\exploded-aar\cn.jiguang.sdk\jcore\1.1.1\jars\libs\jcore-android_v1.1.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0149c38b9688b28e80fab18616d4e80c1906d573">
+        <dex dex="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\pre-dexed\debug\jcore-android_v1.1.1_8e219176a4add7635b45a5fe6644c7ea1de45085.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\exploded-aar\cn.jiguang.sdk\jcore\1.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7880825917f7ad26d7fdfaa421cd1e1827d13c10">
+        <dex dex="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\pre-dexed\debug\cn.jiguang.sdk-jcore-1.1.1_a6c48891a35dbff0059b7489f2702268ffe6dfef.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="548f06de403a9409f00554b3ee12a9fdea0e236c">
+        <dex dex="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-23.4.0_93103b51949489efe21786a2c1cc8b10793bf951.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\exploded-aar\org.xutils\xutils\3.3.44\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="a4638691138066ea48da43ef8f85ce1f5a8c3015">
+        <dex dex="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\pre-dexed\debug\org.xutils-xutils-3.3.44_3b4b840c42388994ca355ace4b659dc6f392cea7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\libs\internal_impl-23.4.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
+        <dex dex="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\pre-dexed\debug\internal_impl-23.4.0_9ed707608bec9e29a782a257cca06572753a22f7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="de4db3785756bfb0915a9f59a9b3f2fea7407be4">
+        <dex dex="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-23.4.0_aba667e6671970640ff83e67b70303da86a38722.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e56490ff10c7f177f2c1c5d5c7deff92d320c713">
+        <dex dex="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\pre-dexed\debug\instant-run-bootstrap_ed2d6aa653ff9f755916b5706190d9e24d040c8b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c2c594cace5d83a3227b2b6e658ecbfd586d3ed9">
+        <dex dex="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-23.4.0_96c81f9d23458d06e53ff7de4f4e4c2a023ad949.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.6.2\f1bc476cc167b18e66c297df599b2377131a8947\gson-2.6.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="f1bc476cc167b18e66c297df599b2377131a8947">
+        <dex dex="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\pre-dexed\debug\gson-2.6.2_002b7fbf7a0de167c934ae8280ecce1c989b18df.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\exploded-aar\cn.jiguang.sdk\jpush\3.0.3\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="637572952be0db98c9288fb9f9fb923a71401be1">
+        <dex dex="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\pre-dexed\debug\cn.jiguang.sdk-jpush-3.0.3_02e874b24126e01bdd824ce2419a2cb3904f5223.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="67bd36ee9340ec7c254108936ad16b24bed160cc">
+        <dex dex="E:\as_project_20170220\AgriculturalIrrigation\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-23.4.0_ebd3e85571ea55866ce3ab37e4e7f5afb65baec9.jar" />
+    </item>
+
+</items>

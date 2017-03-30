@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="jpush-3.0.3">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/cn.jiguang.sdk/jpush/3.0.3/res" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/cn.jiguang.sdk/jpush/3.0.3/jars/libs/jpush-android_v3.0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/cn.jiguang.sdk/jpush/3.0.3/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/cn.jiguang.sdk/jpush/3.0.3/2dbd6c43c0fbba4c0ede1cc6fee6077d29f538d9/jpush-3.0.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

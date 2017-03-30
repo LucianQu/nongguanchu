@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<TextView
+    android:layout_width="match_parent"
+    android:textColor="@color/black"
+    android:textSize="15sp"
+    android:id="@+id/tvwWell"
+    android:text="(29292992)大声道村井"
+    android:gravity="center|left"
+    android:layout_height="50dp" />
+</LinearLayout>

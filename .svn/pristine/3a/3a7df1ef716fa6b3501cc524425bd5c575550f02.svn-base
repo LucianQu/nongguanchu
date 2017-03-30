@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/titlebar_green"
+    android:orientation="horizontal"
+    android:layout_height="22dp">
+    <TextView
+        android:id="@+id/tvKey"
+        android:layout_width="63dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="充值时间"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/tvVlue"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:gravity="center|left"
+        android:textColor="@color/white"
+        android:layout_height="match_parent"
+        android:text="2017年4月1日 12 11:11"
+        android:textSize="14sp" />
+</LinearLayout>

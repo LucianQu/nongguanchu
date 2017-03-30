@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/titlebar_view"
+        style="@style/tab_titlebar">
+
+        <LinearLayout
+            android:layout_width="54dp"
+            android:layout_height="match_parent"
+            android:onClick="onReturnClick"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/imgbtn_back"
+                style="@style/TitleBack"
+                android:layout_gravity="center_vertical"
+                android:focusable="false" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvw_title"
+            style="@style/TitleText"
+
+            android:text="(1001)李村大力镇水光寺麦田井" />
+
+        <ImageButton
+            android:layout_width="13dp"
+            android:layout_height="7.5dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/tvw_title"
+            android:background="@mipmap/ic_down" />
+
+        <Button
+            android:id="@+id/imgbtn_right"
+            style="@style/Titleright"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rootview"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titlebar_view"
+        android:orientation="vertical"></RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        style="@style/tab_titlebar">
+
+        <LinearLayout
+            android:layout_width="54dp"
+            android:layout_height="match_parent"
+            android:onClick="onReturnClick"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/imgbtn_back"
+                style="@style/TitleBack"
+                android:layout_gravity="center_vertical"
+                android:focusable="false" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvw_title"
+            style="@style/TitleText"
+            android:text="李村大力镇水光寺麦田井" />
+
+        <ImageButton
+            android:layout_width="13dp"
+            android:layout_height="7.5dp"
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/tvw_title"
+            android:background="@mipmap/ic_down" />
+
+        <Button
+            android:id="@+id/imgbtn_right"
+            style="@style/Titleright"
+            android:visibility="gone"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:scrollbars="none"
+        android:layout_height="36dp">
+        <RadioGroup
+            android:id="@+id/radiogroup"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/rl_title"
+            android:layout_gravity="bottom"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/radio_open_well"
+                android:layout_width="76dp"
+                android:layout_height="fill_parent"
+                android:background="@drawable/tab_indicator_selector"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:text="开泵记录"
+                android:textColor="@drawable/radiotext_selector" />
+
+            <RadioButton
+                android:id="@+id/radio_openbox_recoder"
+                android:layout_width="76dp"
+                android:layout_height="fill_parent"
+                android:background="@drawable/tab_indicator_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:paddingTop="4.0dip"
+                android:text="开箱记录"
+                android:textColor="@drawable/radiotext_selector" />
+
+            <RadioButton
+                android:id="@+id/radio_recharge_recoder"
+                android:layout_width="76dp"
+                android:layout_height="fill_parent"
+                android:background="@drawable/tab_indicator_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:paddingTop="4.0dip"
+                android:text="充值记录"
+                android:textColor="@drawable/radiotext_selector" />
+
+            <RadioButton
+                android:id="@+id/radio_bad_recoder"
+                android:layout_width="76dp"
+                android:layout_height="fill_parent"
+                android:background="@drawable/tab_indicator_selector"
+                android:button="@null"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:paddingTop="4.0dip"
+                android:text="故障记录"
+                android:textColor="@drawable/radiotext_selector" />
+            <RadioButton
+                android:id="@+id/radio_year_month"
+                android:layout_width="76dp"
+                android:textSize="14sp"
+                android:layout_height="fill_parent"
+                android:background="@drawable/tab_indicator_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:paddingTop="4.0dip"
+                android:text="年月用量"
+                android:textColor="@drawable/radiotext_selector" />
+        </RadioGroup>
+    </HorizontalScrollView>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/recoder_tab_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="88.5dp">
+
+        <ImageView
+            android:id="@+id/img_log"
+            android:layout_width="67dp"
+            android:layout_height="67dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="17.5dp"
+            android:orientation="vertical"
+            android:layout_toRightOf="@+id/img_log">
+
+            <TextView
+                android:id="@+id/tvw_well_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="编码（10001）" />
+
+            <TextView
+                android:id="@+id/tvw_well_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvw_well_no"
+                android:text="名称：大李村沙郦站" />
+
+            <TextView
+                android:id="@+id/tvw_well_admin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvw_well_name"
+                android:text="户主：崔屈大婶" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>
