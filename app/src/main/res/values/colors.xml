@@ -7,6 +7,7 @@
     <color name="general_list_back_color">#ffffffff</color>
     <color name="background_gray">#f0eff5</color>
     <color name="background_white">#ffffff</color>
+    <color name="background_dark_gray">#999999</color>
 
     <color name="text_color_white">#fffffb</color>
     <color name="text_color_light_gray">#d5d5d5</color>

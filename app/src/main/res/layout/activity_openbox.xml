@@ -9,14 +9,14 @@
     android:id="@+id/tvw_openbox"
     android:layout_height="match_parent" />
     <com.automic.app.view.pullpushview.PullToRefreshLayout
-        android:id="@+id/pl_refresh_view"
+        android:id="@+id/pl_refresh_onoffpump"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tvw_openbox"
         android:orientation="vertical">
         <include layout="@layout/refresh_head"></include>
         <com.automic.app.view.pullpushview.PullableListView
-            android:id="@+id/lv_info"
+            android:id="@+id/lv_info_openbox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/general_list_back_color"

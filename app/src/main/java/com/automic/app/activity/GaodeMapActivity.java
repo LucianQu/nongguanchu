@@ -17,6 +17,7 @@ import com.amap.api.maps2d.model.MarkerOptions;
 import com.automic.app.R;
 import com.automic.app.bean.GaodeMapWellInfo;
 import com.automic.app.utils.LogUtils;
+import com.automic.app.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,11 @@ public class GaodeMapActivity extends AppCompatActivity implements AMap.OnMarker
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        m_wLBeanList = bundle.getParcelableArrayList("GaodeMapWellInfo");
+        if(null == bundle) {
+            ToastUtils.show(GaodeMapActivity.this,"地图数据为空!");
+        }else {
+            m_wLBeanList = bundle.getParcelableArrayList("GaodeMapWellInfo");
+        }
 
         m_mapView = (MapView) findViewById(R.id.map);//初始化地图控件
         m_mapView.onCreate(savedInstanceState);//必须要写

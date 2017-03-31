@@ -31,8 +31,8 @@ public class RechargeFragment extends BaseFragment {
         pullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.pl_refresh_recharge);
         listView = (PullableListView)pullToRefreshLayout.findViewById(R.id.lv_info_recharge);
         pullToRefreshLayout.setOnRefreshListener(new MyListener());
-        List<RechargeRecoder>mlist=new ArrayList<RechargeRecoder>();
-        for (int i=0;i<8;i++){
+        List<RechargeRecoder> mlist=new ArrayList<RechargeRecoder>();
+        for (int i=0;i<50;i++){
             mlist.add(new RechargeRecoder("1234532","屈庄站","2017-04-05","56","67","56","54"));
         }
         RechargeRecoderAdapter rechargeRecoderAdapter=new RechargeRecoderAdapter(mActivity,mlist);

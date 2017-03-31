@@ -1,9 +1,10 @@
 package com.automic.app.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.TintableBackgroundView;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.RadioButton;
@@ -12,10 +13,11 @@ import com.automic.app.R;
 import com.automic.app.adapter.FrgtPagerAdapter;
 import com.automic.app.fragment.BadRecoderFragment;
 import com.automic.app.fragment.BaseFragment;
-import com.automic.app.fragment.OpenWellFragment;
+import com.automic.app.fragment.OnOffPumpFragment;
 import com.automic.app.fragment.OpenboxFragment;
 import com.automic.app.fragment.RechargeFragment;
 import com.automic.app.fragment.YearMonthCountFragment;
+import com.automic.app.utils.ToastUtils;
 
 import java.util.ArrayList;
 
@@ -28,12 +30,29 @@ public class RecoderFragmentActivity extends FragmentActivity implements ViewPag
     private ArrayList<RadioButton> tabList;
     private ViewPager viewPager;
 
+    private String defaultPosition;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragmentactivity_recoder);
         setupView();
         initTabBar();
+        setDefaultPosition() ;
+    }
+
+    private void setDefaultPosition() {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if(null == bundle) {
+            ToastUtils.show(RecoderFragmentActivity.this,"位置为空!");
+        }else {
+            defaultPosition = bundle.getString("RecoderFragmentActivity");
+            if (null != defaultPosition) {
+                onPageSelected(Integer.parseInt(defaultPosition)) ;
+            }
+        }
+
     }
 
     private void initTabBar() {
@@ -60,7 +79,7 @@ for (RadioButton rb: tabList){
     private ArrayList<BaseFragment> getFragments() {
 ArrayList<BaseFragment>list=new ArrayList<BaseFragment>();
         OpenboxFragment openboxFragment=new OpenboxFragment();
-        OpenWellFragment openwellFragment=new OpenWellFragment();
+        OnOffPumpFragment openwellFragment=new OnOffPumpFragment();
         BadRecoderFragment badFragment=new BadRecoderFragment();
         RechargeFragment rechargeFragment=new RechargeFragment();
         YearMonthCountFragment ymCountFragment=new YearMonthCountFragment();
@@ -72,6 +91,14 @@ ArrayList<BaseFragment>list=new ArrayList<BaseFragment>();
               return  list;
     }
 
+    public void onReturnClick(View v) {
+        Activity parent = this.getParent();
+        if (parent != null) {
+            parent.finish();
+        } else {
+            this.finish();
+        }
+    }
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -79,7 +106,7 @@ ArrayList<BaseFragment>list=new ArrayList<BaseFragment>();
 
     @Override
     public void onPageSelected(int position) {
-viewPager.setCurrentItem(position);
+        viewPager.setCurrentItem(position);
         tabList.get(position).setChecked(true);
     }
 

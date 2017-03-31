@@ -25,8 +25,8 @@ void senddata(String msg);
 }
 private  Choice choice;
 Activity mActivity;
-private List<String> options;
-	public AddPopWindow(final Activity context,final String[] data) {
+//private List<String> options;
+	public AddPopWindow(final Activity context,final List<String> data) {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		conentView = inflater.inflate(R.layout.popuwindow_dialog, null);
@@ -36,11 +36,11 @@ private List<String> options;
 		int w = context.getWindowManager().getDefaultDisplay().getWidth();
 		// 设置SelectPicPopupWindow的View
 		this.setContentView(conentView);
-		// 设置SelectPicPopupWindow弹出窗体的宽
-		this.setWidth(w/2+50);
-		// 设置SelectPicPopupWindow弹出窗体的高
-		this.setHeight(LayoutParams.WRAP_CONTENT);
-		//this.setHeight(h*2/3);
+//		// 设置SelectPicPopupWindow弹出窗体的宽
+//		this.setWidth(w/2+50);
+//		// 设置SelectPicPopupWindow弹出窗体的高
+//		this.setHeight(LayoutParams.WRAP_CONTENT);
+//		//this.setHeight(h*2/3);
 		// 设置SelectPicPopupWindow弹出窗体可点击
 		this.setFocusable(true);
 		this.setOutsideTouchable(true);
@@ -56,8 +56,8 @@ private List<String> options;
 		//this.setAnimationStyle(R.style.AnimationPreview);
 		this.setChoice(choice);
 		ListView lView=(ListView)conentView.findViewById(R.id.pp_listview);
-		 options = Arrays.asList(data);  
-		PopuwindowAdapter adapter=new PopuwindowAdapter(context, options);
+		// options = Arrays.asList(data);
+		PopuwindowAdapter adapter=new PopuwindowAdapter(context, data);
 		 //ArrayAdapter<String> adapter=new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, data);  
 		 lView.setAdapter(adapter);
 		lView.setOnItemClickListener(new OnItemClickListener() {
@@ -66,7 +66,7 @@ private List<String> options;
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				// TODO Auto-generated method stub
 				//choice.senddata(data[arg2]);
-				choice.senddata(options.get(arg2));
+				choice.senddata(String.valueOf(arg2));//把位置传过去
 				AddPopWindow.this.dismiss();
 				//弹框消失，回复原来的颜色
 				 WindowManager.LayoutParams params=mActivity.getWindow().getAttributes();  
@@ -89,10 +89,13 @@ private List<String> options;
 			// 设置弹出框外为黑色
 			WindowManager.LayoutParams params = mActivity.getWindow().getAttributes();
 			params.alpha = 0.7f;
-			mActivity.getWindow().setAttributes(params);  
+			mActivity.getWindow().setAttributes(params);// 设置SelectPicPopupWindow弹出窗体的宽
+		this.setWidth(parent.getWidth());
+		// 设置SelectPicPopupWindow弹出窗体的高
+		this.setHeight(LayoutParams.WRAP_CONTENT);
 			// 以下拉方式显示popupwindow
-			//this.showAsDropDown(parent, parent.getLayoutParams().width / 2, 18);
-			this.showAtLocation(parent, Gravity.CENTER, 0, 0);
+			this.showAsDropDown(parent, 0, 0);
+			//this.showAtLocation(parent, Gravity.CENTER, 0, 0);
 		} else {
 			this.dismiss();
 		}

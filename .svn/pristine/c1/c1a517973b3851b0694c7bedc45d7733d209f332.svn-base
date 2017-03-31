@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_search_well"
+    android:layout_height="match_parent">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:background="@color/white"
+    android:layout_height="49dp">
+    <EditText
+        android:layout_width="match_parent"
+        android:id="@+id/edt_search"
+        android:textColorHint="#cdcdcd"
+        android:textColor="@color/black"
+        android:hint="请输入机井编码/名称"
+        android:layout_toLeftOf="@+id/tvw_cancel"
+        android:layout_height="match_parent" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="取消"
+        android:textColor="#999999"
+        android:id="@+id/tvw_cancel"
+android:gravity="center_vertical"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_height="match_parent" />
+</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:padding="10dp"
+        android:id="@+id/ll_select"
+        android:background="@color/bg_search_well"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@color/general_list_back_color"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="#999999"
+                android:id="@+id/tvw_spinner_wxiang"
+                android:text="选择乡" />
+
+            <TextView
+                android:layout_width="7.5dp"
+                android:background="@mipmap/ic_down_more"
+                android:layout_gravity="center_vertical"
+                android:layout_height="5dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginLeft="3.5dp"
+            android:background="@color/general_list_back_color"
+            android:layout_weight="3">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="#999999"
+                android:id="@+id/tvw_spinner_wcun"
+                android:text="选择村" />
+
+            <TextView
+                android:layout_width="7.5dp"
+                android:background="@mipmap/ic_down_more"
+                android:layout_gravity="center_vertical"
+                android:layout_height="5dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <com.automic.app.view.pullpushview.PullToRefreshLayout
+        android:layout_width="match_parent"
+        android:id="@+id/pp_layout"
+        android:layout_marginRight="10dp"
+
+        android:layout_marginLeft="10dp"
+        android:layout_height="match_parent">
+        <include layout="@layout/refresh_head"
+            android:background="#c3c3c1"></include>
+        <com.automic.app.view.pullpushview.PullableListView
+            android:id="@+id/lv_well_search"
+            android:layout_width="match_parent"
+            android:listSelector="@android:color/transparent"
+            android:layout_height="match_parent"
+            android:background="@color/general_list_back_color"
+            android:cacheColorHint="@color/general_list_back_color"
+            android:descendantFocusability="blocksDescendants"
+            android:divider="#F3F3F3"
+            android:dividerHeight="5dip"
+            android:fastScrollEnabled="false"
+            android:scrollbars="none">
+        </com.automic.app.view.pullpushview.PullableListView>
+        <include layout="@layout/load_more"
+            android:background="#c3c3c1"></include>
+    </com.automic.app.view.pullpushview.PullToRefreshLayout>
+
+</LinearLayout>

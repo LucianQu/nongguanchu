@@ -15,10 +15,16 @@
     <dimen name="text20">20sp</dimen>
     <dimen name="text21">21sp</dimen>
     <dimen name="text22">22sp</dimen>
-
+    <dimen name="common_drawablePadding0">0dp</dimen>
+    <dimen name="common_drawablePadding1">1dp</dimen>
     <dimen name="common_drawablePadding3">3dp</dimen>
     <dimen name="common_drawablePadding5">5dp</dimen>
     <dimen name="common_drawablePadding10">10dp</dimen>
+    <dimen name="common_drawablePadding12">12dp</dimen>
     <dimen name="common_drawablePadding15">15dp</dimen>
+    <dimen name="common_drawablePadding20">20dp</dimen>
+    <dimen name="common_drawablePadding22">22dp</dimen>
     <dimen name="common_drawablePadding23">23dp</dimen>
+    <dimen name="common_drawablePadding48">48dp</dimen>
+    <dimen name="common_drawablePadding63">63dp</dimen>
 </resources>

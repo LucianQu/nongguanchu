@@ -16,21 +16,24 @@
         android:layout_centerVertical="true"
         android:src="@mipmap/wellinfo_map_marker_logo"
         />
-    <TextView
-        android:id="@+id/wellinfo_wellAddress"
-        android:layout_marginLeft="@dimen/common_drawablePadding10"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/fun_image_left"
-        android:text=""
-        style="@style/viewtext16_style"
-        />
+
     <ImageView
+        android:id="@+id/wi_titleRightIme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:paddingRight="@dimen/common_drawablePadding15"
         android:layout_centerVertical="true"
-        android:src="@mipmap/right_arrow"
+        android:src="@mipmap/right_arrow_gray"
+        />
+    <TextView
+        android:id="@+id/wellinfo_wellAddress"
+        android:layout_marginLeft="@dimen/common_drawablePadding10"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/fun_image_left"
+        android:layout_toLeftOf="@id/wi_titleRightIme"
+        android:text=""
+        style="@style/viewtext16_style"
         />
 
 

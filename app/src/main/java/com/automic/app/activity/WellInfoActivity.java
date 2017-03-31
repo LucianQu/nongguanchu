@@ -1,5 +1,6 @@
 package com.automic.app.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -14,11 +15,23 @@ import android.widget.TextView;
 import com.automic.app.R;
 import com.automic.app.bean.ActionItem;
 import com.automic.app.bean.GaodeMapWellInfo;
+import com.automic.app.bean.WellInfo;
+import com.automic.app.utils.LogUtils;
 import com.automic.app.view.TitlePopup;
 import com.automic.app.utils.ToastUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.automic.app.bean.Constant.BASEIP;
 
 /**
  * Created by sujingtai on 2017/3/24 0024.
@@ -26,7 +39,7 @@ import java.util.List;
  */
 
 public class WellInfoActivity extends BaseActivity {
-
+    private Context m_Context;
     private TitlePopup m_titlePopup ;
 
     private TextView m_wellNo ;
@@ -55,8 +68,9 @@ public class WellInfoActivity extends BaseActivity {
 
     private RelativeLayout m_wellInfoDeviceStatusTitle ;
     private LinearLayout wellinfo_deviceStatusContent;
+    private List<WellInfo> m_wIBeanList ;
 
-    public List<GaodeMapWellInfo> m_wLBeanList = new ArrayList<>() ;
+    public List<GaodeMapWellInfo> m_wIMapBeanList = new ArrayList<>() ;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +80,7 @@ public class WellInfoActivity extends BaseActivity {
     }
 
     private void setupView() {
+        m_Context = WellInfoActivity.this ;
         m_wellNo = (TextView) findViewById(R.id.wellInfo_No) ;
         m_wellName = (TextView) findViewById(R.id.wellInfo_Name) ;
         m_wellUser = (TextView) findViewById(R.id.wellInfo_User) ;
@@ -90,17 +105,9 @@ public class WellInfoActivity extends BaseActivity {
         m_electStatusTitle = (TextView) findViewById(R.id.wi_deviceStatusElectTitle) ;
         m_electMeterStatus = (TextView) findViewById(R.id.wi_deviceStatusElectMeter) ;
 
-        m_wellNo.setText("110");
-        m_wellName.setText("奎管处1号井");
-        m_wellUser.setText("苏神1号");
+        getWellDetailsData(null, "654003001006") ;
 
-        m_wellAddress.setText("新疆塔克拉玛干沙漠中心带");
 
-        m_waterSurplus.setText("500吨");
-        m_electSurplus.setText("60度");
-        m_yearElectConsum.setText("5000度");
-        m_yearWaterConsum.setText("6000吨");
-        m_yearPlanWaterConsum.setText("7000吨");
 
         /*m_rtuStatusIme.setVisibility(View.VISIBLE);
         m_rtuStatusTitle.setVisibility(View.VISIBLE);
@@ -157,35 +164,30 @@ public class WellInfoActivity extends BaseActivity {
      */
     public void entryGaodeMap() {
 
-        m_wLBeanList.clear();
-
-        GaodeMapWellInfo wLBean1 = new GaodeMapWellInfo() ;
-        wLBean1.setWellNo("机井编码:" + "111");
-        wLBean1.setWellName("机井名称:" + "奎管处2号井");
-        wLBean1.setWellUser("机井户主:" + "苏神2号");
-        wLBean1.setWellX(0.02 + 44.42);
-        wLBean1.setWellY(84.9);
-        m_wLBeanList.add(wLBean1);
+        m_wIMapBeanList.clear();
 
         GaodeMapWellInfo wLBean = new GaodeMapWellInfo() ;
-        wLBean.setWellNo("机井编码:" + "110");
-        wLBean.setWellName("机井名称:" + "奎管处1号井");
-        wLBean.setWellUser("机井户主:" + "苏神1号");
-        wLBean.setWellX(44.42);
-        wLBean.setWellY(84.9);
-        m_wLBeanList.add(wLBean);
+        wLBean.setWellNo("机井编码:" + m_wIBeanList.get(0).getWellNo());
+        wLBean.setWellName("机井名称:" + m_wIBeanList.get(0).getWellName());
+        wLBean.setWellUser("机井户主:" + m_wIBeanList.get(0).getAdmin());
+        wLBean.setWellX(m_wIBeanList.get(0).getWellLat());
+        wLBean.setWellY(m_wIBeanList.get(0).getWellLong());
+        m_wIMapBeanList.add(wLBean);
 
         Intent intent = new Intent() ;
-        intent.setClass(WellInfoActivity.this, GaodeMapActivity.class) ;
+        intent.setClass(m_Context, GaodeMapActivity.class) ;
         intent.putParcelableArrayListExtra("GaodeMapWellInfo",
-                (ArrayList<? extends Parcelable>) m_wLBeanList);
+                (ArrayList<? extends Parcelable>) m_wIMapBeanList);
         startActivity(intent);
 
     }
 
-    public void openNewActivity(Class<?> cls) {
+    public void openNewActivity(Class<?> cls ,String name, String position) {
         Intent intent = new Intent() ;
-        intent.setClass(WellInfoActivity.this,cls);
+        intent.setClass(m_Context,cls);
+        if (null != position) {
+            intent.putExtra(name, position) ;
+        }
         startActivity(intent);
     }
 
@@ -195,7 +197,7 @@ public class WellInfoActivity extends BaseActivity {
     public class onClickTitleTextListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            ToastUtils.show(WellInfoActivity.this, "onClickTitleTextListener");
+            ToastUtils.show(m_Context, "onClickTitleTextListener");
         }
     }
 
@@ -205,7 +207,7 @@ public class WellInfoActivity extends BaseActivity {
     public class onClickPumpOperateListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            ToastUtils.show(WellInfoActivity.this, "开泵");
+            ToastUtils.show(m_Context, "开泵");
         }
     }
 
@@ -226,7 +228,7 @@ public class WellInfoActivity extends BaseActivity {
         @Override
         public void onClick(View v) {
             //ToastUtils.show(WellInfoActivity.this, "m_wellInfoDeviceStatusTitle");
-            openNewActivity(DeviceStatusActivity.class) ;
+            openNewActivity(DeviceStatusActivity.class, null, null) ;
         }
     }
 
@@ -237,7 +239,7 @@ public class WellInfoActivity extends BaseActivity {
         @Override
         public void onClick(View v) {
             //ToastUtils.show(WellInfoActivity.this, "m_wellInfoDeviceStatusContent");
-            openNewActivity(DeviceStatusActivity.class) ;
+            openNewActivity(DeviceStatusActivity.class, null, null) ;
         }
     }
 
@@ -262,27 +264,28 @@ public class WellInfoActivity extends BaseActivity {
                 switch (position) {
                     case 0:
                         //开泵记录
-                        openNewActivity(RecoderFragmentActivity.class) ;
+
+                        openNewActivity(RecoderFragmentActivity.class,"RecoderFragmentActivity","0") ;
                         break;
                     case 1:
                         //开箱记录
-                        openNewActivity(RecoderFragmentActivity.class) ;
+                        openNewActivity(RecoderFragmentActivity.class,"RecoderFragmentActivity","1") ;
                         break;
                     case 2:
                         //充值记录
-                        openNewActivity(RecoderFragmentActivity.class) ;
+                        openNewActivity(RecoderFragmentActivity.class,"RecoderFragmentActivity","2") ;
                         break;
                     case 3:
                         //故障记录
-                        openNewActivity(RecoderFragmentActivity.class) ;
+                        openNewActivity(RecoderFragmentActivity.class,"RecoderFragmentActivity","3") ;
                         break;
                     case 4:
                         //地图定位
-                        openNewActivity(RecoderFragmentActivity.class) ;
+                        openNewActivity(GaodeMapActivity.class,null,null) ;
                         break;
                     case 5:
                         //年月用量
-                        openNewActivity(RecoderFragmentActivity.class) ;
+                        openNewActivity(RecoderFragmentActivity.class,"RecoderFragmentActivity","4") ;
                         break;
                     default:
                         break;
@@ -308,6 +311,78 @@ public class WellInfoActivity extends BaseActivity {
                 R.mipmap.map_location));
         m_titlePopup.addAction(new ActionItem(this, getResources().getString(R.string.yearMonthUse),
                 R.mipmap.yearmonth_use));
+    }
+
+    /**
+     * 获取机井详情数据
+     * @param uId 用户Id
+     * @param wNo 机井编码
+     */
+   private void getWellDetailsData(String uId, String wNo) {
+       String url = BASEIP + "/well/queryWellInfo" ;
+       RequestParams requestParams = new RequestParams(url) ;//网络请求参数实体,设置url
+       if (null != uId) {
+           requestParams.addBodyParameter("userId", uId);   //添加用户Id参数至Body
+       }
+       if (null != wNo) {
+           requestParams.addBodyParameter("wellNo", wNo);   //添加机井编码参数至Body
+       }
+       if(uId == null && wNo == null) {
+           ToastUtils.show(m_Context, "用户Id与机井编码为空!");
+           return;
+       }
+
+       x.http().post(requestParams, new Callback.CommonCallback<String>() {
+           @Override
+           public void onSuccess(String result) {
+               try {
+                   JSONObject jsonObject = new JSONObject(result) ;//根据返回字段,创建JSONObject
+                   int code = jsonObject.getInt("code") ;
+                   if (code == 1) {
+                       Gson gson = new Gson() ;
+                       String data = jsonObject.getString("result") ;
+                       LogUtils.e("wellInfoDetails", "返回数据" + data);
+                       m_wIBeanList = gson.fromJson(data, new TypeToken<List<WellInfo>>(){}.getType()) ;
+                       LogUtils.e("wIBeanList:","" + m_wIBeanList.size());
+                       setWellInfoDetail();//设置机井详情界面
+                   }else {
+                       ToastUtils.show(m_Context, "无数据!");
+                   }
+               } catch (JSONException e) {
+                   e.printStackTrace();
+               } finally {
+
+               }
+           }
+
+           @Override
+           public void onError(Throwable ex, boolean isOnCallback) {
+               LogUtils.e("sjt","error");
+           }
+
+           @Override
+           public void onCancelled(CancelledException cex) {
+
+           }
+
+           @Override
+           public void onFinished() {
+
+           }
+       });
+
+   }
+
+    private void setWellInfoDetail() {
+        m_wellNo.setText(m_wIBeanList.get(0).getWellNo());
+        m_wellName.setText(m_wIBeanList.get(0).getWellName());
+        m_wellUser.setText(m_wIBeanList.get(0).getAdmin());
+        m_wellAddress.setText(m_wIBeanList.get(0).getWellAddress());
+        m_waterSurplus.setText(m_wIBeanList.get(0).getRemainWater());
+        m_electSurplus.setText(m_wIBeanList.get(0).getRemainElect());
+        m_yearElectConsum.setText(m_wIBeanList.get(0).getYearAddupElec());
+        m_yearWaterConsum.setText(m_wIBeanList.get(0).getYearAddupWater());
+        m_yearPlanWaterConsum.setText(m_wIBeanList.get(0).getYearPlanWater());
     }
 
 }

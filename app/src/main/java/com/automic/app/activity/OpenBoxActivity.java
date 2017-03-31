@@ -22,7 +22,7 @@ public class OpenBoxActivity extends BaseActivity {
     }
 
     private void setupview() {
-        pullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.pl_refresh_view);
+        pullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.pl_refresh_onoffpump);
         pullToRefreshLayout.setOnRefreshListener(new MyListener());
     }
     /*

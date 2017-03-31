@@ -89,9 +89,11 @@ android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:id="@+id/pp_layout"
         android:layout_marginRight="10dp"
+
         android:layout_marginLeft="10dp"
         android:layout_height="match_parent">
-        <include layout="@layout/refresh_head"></include>
+        <include layout="@layout/refresh_head"
+            android:background="#c3c3c1"></include>
         <com.automic.app.view.pullpushview.PullableListView
             android:id="@+id/lv_well_search"
             android:layout_width="match_parent"
@@ -105,7 +107,8 @@ android:gravity="center_vertical"
             android:fastScrollEnabled="false"
             android:scrollbars="none">
         </com.automic.app.view.pullpushview.PullableListView>
-        <include layout="@layout/load_more"></include>
+        <include layout="@layout/load_more"
+            android:background="#c3c3c1"></include>
     </com.automic.app.view.pullpushview.PullToRefreshLayout>
 
 </LinearLayout>

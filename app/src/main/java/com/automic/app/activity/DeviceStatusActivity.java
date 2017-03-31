@@ -51,12 +51,12 @@ public class DeviceStatusActivity extends BaseActivity {
 
     private void initData() {
         String[] stateType = new String[4];
-        stateType[0] = "rtuGood" ;
+        stateType[0] = "rtuBatLow" ;
         stateType[1] = "flowmeterGood" ;
         stateType[2] = "electMeterBad" ;
         stateType[3] = "pumpOff" ;
         String[] stateDetail = new String[4] ;
-        stateDetail[0] = "1100006666:automic:AM2012" ;
+        stateDetail[0] = "1100006666:automic:AM2012:电池电压12V:信号差5" ;
         stateDetail[1] = "1100007777:automic:电磁流量计" ;
         stateDetail[2] = "1100008888:automic:决胜牌电表" ;
         stateDetail[3] = "1100009999:automic:水泵888" ;

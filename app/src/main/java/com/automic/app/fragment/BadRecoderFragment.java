@@ -9,7 +9,7 @@ import com.automic.app.R;
 public class BadRecoderFragment extends BaseFragment {
     @Override
     public void initLayout() {
-        layoutId= R.layout.fragment_openbox;
+        layoutId= R.layout.fragment_badrecoder;
     }
 
     @Override

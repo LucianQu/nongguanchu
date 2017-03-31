@@ -43,6 +43,11 @@
             android:theme="@style/Theme.AppCompat.NoActionBar">
 
         </activity>
+        <activity android:name=".activity.LoadPictrueActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+
+        </activity>
         <activity android:name=".activity.SearchWellActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar">
