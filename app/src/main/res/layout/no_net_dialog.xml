@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/loadingIv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+   android:layout_centerHorizontal="true"
+        android:background="@mipmap/custom_dialog_nonet" />
+
+    <TextView
+        android:id="@+id/loadingTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loadingIv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:gravity="center_horizontal"
+        android:text="加载失败，请检查您的当前的网络环境！"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/btn_load_again"
+        android:layout_width="88dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/loadingTv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/ic_bg_edt"
+        android:text="重新加载" />
+</RelativeLayout>

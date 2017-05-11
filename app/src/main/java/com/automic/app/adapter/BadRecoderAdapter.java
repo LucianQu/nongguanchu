@@ -1,0 +1,77 @@
+package com.automic.app.adapter;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.widget.TextView;
+
+import com.automic.app.R;
+import com.automic.app.bean.DeviceStatus;
+
+import java.util.List;
+
+/**
+ * 类注释：故障记录adapter
+ * Created by sujingtai on 2017/4/5 0005 下午 12:43
+ */
+
+public class BadRecoderAdapter extends BaseTtAdapter<DeviceStatus> {
+    private Context m_context ;
+    private String m_rtuType = "" ;
+    private String m_flowType = "" ;
+    private String m_electType = "" ;
+    public BadRecoderAdapter(Context context, List<DeviceStatus> mList) {
+        super(context, mList);
+        this.m_context = context ;
+        this.setLayoutId(R.layout.item_listview_badrecord);
+        int[] ids = {R.id.br_time, R.id.br_rtuStateType, R.id.br_flowMeStateType, R.id.br_electMeStateType} ;
+        String fields[] = {"occurTime", "rtuStateType", "flowMeStateType", "electMeStateType"} ;
+        this.setClass(ViewHolderBadRecord.class);
+        this.setViewIds(ids);
+        this.setFields(fields);
+    }
+
+    @Override
+    public void addDataToView(DeviceStatus deviceStatus, Object o) {
+        for (int i = 0; i < deviceStatus.getStateType().size(); i++) {
+            getStateType(deviceStatus, i) ;
+        }
+        String occurtime = deviceStatus.getOccurTime()!=null? "" : deviceStatus.getOccurTime();
+        if (o instanceof ViewHolderBadRecord) {
+            ((ViewHolderBadRecord) o).occurTime.setText(occurtime);
+            ((ViewHolderBadRecord) o).rtuStateType.setText(m_rtuType);
+            ((ViewHolderBadRecord) o).flowMeStateType.setText(m_flowType);
+            ((ViewHolderBadRecord) o).electMeStateType.setText(m_electType);
+        }
+    }
+    static class ViewHolderBadRecord {
+        TextView occurTime ;
+        TextView rtuStateType ;
+        TextView flowMeStateType ;
+        TextView electMeStateType ;
+    }
+
+    private void getStateType(DeviceStatus deviceStatus,int position) {
+        if (position >= deviceStatus.getStateType().size())
+            return ;
+        String str = deviceStatus.getStateType().get(position) ;
+        if ("rtuGood".equals(str)) {
+            m_rtuType ="正常" ;
+        }else if ("rtuOffLine".equals(str)) {
+            m_rtuType ="离线" ;
+        }else if ("rtuLossElec".equals(str)) {
+            m_rtuType ="220v市电停电" ;
+        }else if ("rtuBatLow".equals(str)) {
+            m_rtuType ="蓄电池电压低" ;
+        }else if ("flowmeterGood".equals(str)) {
+            m_flowType = "正常" ;
+        }else if ("flowmeterBad".equals(str)) {
+            m_flowType = "故障" ;
+        }else if ("fmeterVoLow".equals(str)) {
+            m_flowType = "电压低" ;
+        }else if ("electMeterGood".equals(str)) {
+            m_electType = "正常" ;
+        }else if ("electMeterBad".equals(str)) {
+            m_electType = "故障" ;
+        }
+    }
+}

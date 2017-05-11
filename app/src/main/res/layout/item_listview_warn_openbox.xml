@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/ob_title"
+        android:layout_width="match_parent"
+        android:background="@drawable/shape_top2_green"
+        android:layout_height="44dp">
+        <TextView
+            android:id="@+id/tvw_well_info"
+            android:layout_width="220dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:gravity="left|center_vertical"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/white"
+            android:text="新疆建设兵团第二队第三支队第五班直辖出三里弄08号井"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tvw_warn_occur_time"
+            android:layout_width="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:singleLine="true"
+            android:layout_toRightOf="@+id/tvw_well_info"
+            android:textColor="@color/white"
+            android:gravity="right|center_vertical"
+            android:text="1月12日 11:22"
+            android:textSize="12sp" />
+        <TextView
+            android:id="@+id/tvw_warn_wellNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:gravity="right|center_vertical"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:singleLine="true"
+            android:layout_below="@+id/tvw_warn_occur_time"
+            android:layout_toRightOf="@+id/tvw_well_info"
+            android:textColor="@color/white"
+            android:text="编码17032811121000004"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/common_drawablePadding5"
+        android:paddingTop="@dimen/common_drawablePadding5"
+        android:background="@color/background_white"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:layout_marginLeft="12dp"
+            android:layout_height="22dp">
+            <TextView
+                android:id="@+id/ob_titleTime"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/common_drawablePadding5"
+                android:paddingRight="@dimen/common_drawablePadding5"
+                android:gravity="center_vertical"
+                android:background="#999999"
+                android:textColor="@color/white"
+                android:text="开箱时间"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tvw_on_time"
+                android:layout_width="wrap_content"
+                android:paddingLeft="@dimen/common_drawablePadding5"
+                android:gravity="center|left"
+                android:textColor="#666666"
+                android:layout_height="match_parent"
+                android:text="2017年1月12日 11:22"
+                android:textSize="14sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:paddingLeft="@dimen/common_drawablePadding5"
+                android:gravity="center|right"
+                android:paddingRight="5dp"
+                android:textColor="#999999"
+                android:layout_height="match_parent"
+                android:text="查看图片"
+                android:drawableRight="@mipmap/right_arrow_gray"
+                android:textSize="14sp" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"></View>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:layout_marginLeft="12dp"
+            android:layout_height="22dp">
+            <TextView
+                android:id="@+id/ob_offBoxTiTime"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/common_drawablePadding5"
+                android:paddingRight="@dimen/common_drawablePadding5"
+                android:gravity="center_vertical"
+                android:background="#999999"
+                android:textColor="@color/white"
+                android:text="关箱时间"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tvw_off_time"
+                android:layout_width="wrap_content"
+                android:paddingLeft="@dimen/common_drawablePadding5"
+                android:gravity="center|left"
+                android:textColor="#666666"
+                android:layout_height="match_parent"
+                android:text="2017年1月12日 11:22"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

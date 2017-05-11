@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="#f0eff5"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <com.automic.app.view.pullpushview.PullToRefreshLayout
+        android:id="@+id/pl_refresh_warn_waterElecless"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical">
+        <include layout="@layout/refresh_head"></include>
+        <com.automic.app.view.pullpushview.PullableListView
+            android:id="@+id/lv_info_warn_waterElecless"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/general_list_back_color"
+            android:cacheColorHint="@color/general_list_back_color"
+            android:descendantFocusability="blocksDescendants"
+            android:divider="#F3F3F3"
+            android:dividerHeight="5dip"
+            android:fastScrollEnabled="false"
+            android:listSelector="@android:color/transparent"
+            android:scrollbars="none">
+
+        </com.automic.app.view.pullpushview.PullableListView>
+        <include layout="@layout/load_more"></include>
+    </com.automic.app.view.pullpushview.PullToRefreshLayout>
+</LinearLayout>

@@ -1,0 +1,51 @@
+package com.automic.app.adapter;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.widget.TextView;
+
+import com.automic.app.R;
+import com.automic.app.bean.WaterEleclessWarn;
+
+import java.util.List;
+
+/**
+ * 水电不足报警
+ * Created by qulus on 2017/4/12 0012.
+ */
+
+public class WarnWaterEleclessAdapter extends BaseTtAdapter<WaterEleclessWarn> {
+    private Context m_context ;
+    public WarnWaterEleclessAdapter(Context context, List<WaterEleclessWarn> mList) {
+        super(context, mList);
+        this.m_context = context ;
+        this.setLayoutId(R.layout.item_listview_warn_waterelec_less);
+        int[] ids = {R.id.warn_wEl_titleWellNo, R.id.warn_wEl_time, R.id.warn_wEl_reaminWater,
+                R.id.warn_wEl_remainElec} ;
+        String fields[] = {"wellNoTv", "occurTime", "remainWater", "remainElect"} ;
+        this.setClass(ViewHolderWarnWaterElecless.class);
+        this.setViewIds(ids);
+        this.setFields(fields);
+    }
+
+    @Override
+    public void addDataToView(WaterEleclessWarn waterEleclessWarn, Object o) {
+        String wellNo = waterEleclessWarn.getWellNo() ;
+        String occurtime = waterEleclessWarn.getOccurTime() ;
+        String remainWater = waterEleclessWarn.getRemainWater() ;
+        String remainElec = waterEleclessWarn.getRemainElect() ;
+
+        if (o instanceof ViewHolderWarnWaterElecless) {
+            ((ViewHolderWarnWaterElecless) o).wellNoTv.setText(wellNo) ;
+            ((ViewHolderWarnWaterElecless) o).occurTime.setText(occurtime) ;
+            ((ViewHolderWarnWaterElecless) o).remainWater.setText(remainWater) ;
+            ((ViewHolderWarnWaterElecless) o).remainElect.setText(remainElec) ;
+        }
+    }
+    static class ViewHolderWarnWaterElecless {
+        TextView wellNoTv ;
+        TextView occurTime ;
+        TextView remainWater ;
+        TextView remainElect ;
+    }
+}

@@ -1,0 +1,154 @@
+package com.automic.app.fragment;
+
+import android.os.Handler;
+import android.os.Message;
+
+import com.automic.app.R;
+import com.automic.app.activity.RecoderFragmentActivity;
+import com.automic.app.adapter.RechargeRecoderAdapter;
+import com.automic.app.bean.Constant;
+import com.automic.app.bean.RechargeRecoder;
+import com.automic.app.utils.ToastUtils;
+import com.automic.app.view.pullpushview.PullToRefreshLayout;
+import com.automic.app.view.pullpushview.PullableListView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by sujingtai on 2017/3/29 0029.
+ */
+
+public class RechargeFragment extends BaseFragment {
+    private PullToRefreshLayout pullToRefreshLayout;
+    private PullableListView listView;
+    private int currentPage=1;
+    private List<RechargeRecoder> mlist=new ArrayList<RechargeRecoder>();
+    List<RechargeRecoder>listCache=new ArrayList<RechargeRecoder>();
+    private RechargeRecoderAdapter rechargeRecoderAdapter;
+
+    @Override
+    public void initLayout() {
+        layoutId= R.layout.fragment_recharge;
+    }
+
+    @Override
+    public void initStatus() {
+        mlist = new ArrayList<RechargeRecoder>();
+        pullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.pl_refresh_recharge);
+        listView = (PullableListView)pullToRefreshLayout.findViewById(R.id.lv_info_recharge);
+        pullToRefreshLayout.setOnRefreshListener(new MyListener());
+
+        queryRechargeRecoder(mActivity.getCurrentWellNo());
+
+    }
+    private void queryRechargeRecoder(String  wellNo){
+        String url= Constant.BASEIP+"/well/queryRechargeRecoder";
+        RequestParams requestParams=new RequestParams(url);
+        requestParams.addBodyParameter("userId","admin");
+        requestParams.addBodyParameter("wellNo",wellNo);
+        requestParams.addParameter("currentPage",currentPage);
+        requestParams.addBodyParameter("count","20");
+        x.http().post(requestParams, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    JSONObject json=new JSONObject(result);
+                    int code= json.getInt("code");
+
+                    if (code == 1) {
+                        if (isFresh){
+                            mlist.clear();
+                        }
+                        String data=    json.getString("result");
+                        listCache=new Gson().fromJson(data,new TypeToken<List<RechargeRecoder>>(){}.getType());
+                        mlist.addAll(listCache);
+                        listCache.clear();//本次清空缓存
+                        rechargeRecoderAdapter=  new RechargeRecoderAdapter(mActivity, mlist);
+                        listView.setAdapter(rechargeRecoderAdapter);
+                        rechargeRecoderAdapter.notifyDataSetChanged();
+                    }else {
+
+                        if (mlist.size()==0){
+                            ToastUtils.show(mActivity,"查询不到数据");
+                        }else{
+                            ToastUtils.show(mActivity,"已经加载到底了");
+                        }
+//                        //假数据
+//                        for (int i=0;i<50;i++){
+//                            mlist.add(new RechargeRecoder("1234532","屈庄站","2017-04-05","56","67","56","54"));
+//                        }
+//                        RechargeRecoderAdapter rechargeRecoderAdapter=new RechargeRecoderAdapter(mActivity, mlist);
+//                        listView.setAdapter(rechargeRecoderAdapter);
+//                        rechargeRecoderAdapter.notifyDataSetChanged();\
+                    }
+
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                ToastUtils.show(mActivity,"网络请求失败");
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+    private boolean isFresh=false;
+    /*
+  * 下拉和上拉刷新的监听器
+  */
+    private class MyListener implements PullToRefreshLayout.OnRefreshListener {
+
+        @Override
+        public void onRefresh(final PullToRefreshLayout pullToRefreshLayout) {
+            // 下拉刷新操作
+           currentPage = 1;
+            isFresh=true;
+            queryRechargeRecoder(mActivity.getCurrentWellNo());
+            new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    // 千万别忘了告诉控件刷新完毕了哦！
+
+                    pullToRefreshLayout.refreshFinish(PullToRefreshLayout.SUCCEED);
+                }
+
+            }.sendEmptyMessageDelayed(0, 500);
+        }
+
+        @Override
+        public void onLoadMore(final PullToRefreshLayout pullToRefreshLayout) {
+            // 加载操作
+            currentPage++;
+            isFresh=false;
+            queryRechargeRecoder(mActivity.getCurrentWellNo());
+            new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    // 千万别忘了告诉控件加载完毕了哦！
+                    pullToRefreshLayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
+                }
+            }.sendEmptyMessageDelayed(0, 500);
+        }
+    }
+}

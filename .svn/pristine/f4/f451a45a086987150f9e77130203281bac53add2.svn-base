@@ -1,0 +1,79 @@
+package com.automic.app.activity;
+
+
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.automic.app.R;
+
+public class MineActivity extends Activity {
+	private LinearLayout m_linearLayout ;
+	private LinearLayout m_linearLayoutTitle ;
+	private LinearLayout m_linearLayoutExit ;
+	private TextView m_version ;
+	@SuppressWarnings("deprecation")
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_logout);
+
+		m_linearLayout = (LinearLayout)findViewById(R.id.mine_linearlayout);
+		m_linearLayoutTitle = (LinearLayout)findViewById(R.id.mine_linearlayoutTitle);
+		m_linearLayoutExit = (LinearLayout)findViewById(R.id.mine_linearlayoutExit);
+		m_linearLayoutExit.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				LoginActivity.instance.setCbSaveStatus(false);
+				openActivity(LoginActivity.class) ;
+				MineActivity.this.finish();
+			}
+		});
+		m_linearLayoutTitle.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				openActivity(MainActivity.class) ;
+				MineActivity.this.finish();
+			}
+		});
+		m_version = (TextView) findViewById(R.id.mine_version);
+		m_version.setText(getResources().getString(R.string.txtVersion) + " " + this.getSoftVersion(this));
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if(m_linearLayout != null){
+			System.gc() ; //提醒系统及时回收
+		}
+	}
+	/**
+	 * 打开一个Activity
+	 * @param cls
+	 */
+	public void openActivity(Class<?> cls){
+		Intent intent =new Intent();
+		intent.setClass(this, cls);
+		startActivity(intent);
+	}
+	  
+	//得到软件版本信息
+	public String getSoftVersion(Activity at){
+		PackageManager pm = at.getPackageManager();
+      try {
+         PackageInfo pi = pm.getPackageInfo("com.blg.rtu", 0);
+         return pi.versionName ;
+      } catch (NameNotFoundException e) {
+         e.printStackTrace();
+      }
+      return "" ;
+	}
+
+
+}

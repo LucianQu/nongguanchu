@@ -1,0 +1,252 @@
+package com.automic.app.activity;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.AdapterView;
+
+import com.automic.app.R;
+import com.automic.app.adapter.WarnDeviceStatusAdapter;
+import com.automic.app.bean.DeviceStatus;
+import com.automic.app.utils.AppUtils;
+import com.automic.app.utils.LogUtils;
+import com.automic.app.utils.ToastUtils;
+import com.automic.app.view.pullpushview.PullToRefreshLayout;
+import com.automic.app.view.pullpushview.PullableListView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.automic.app.bean.Constant.BASEIP;
+
+/**
+ * Created by qulus on 2017/4/12 0012.
+ */
+
+public class DeviceWorkWarnActivity extends BaseActivityWarn {
+
+    private List<DeviceStatus> m_dS_List = new ArrayList<DeviceStatus>() ;
+    private List<DeviceStatus> m_listCache = new ArrayList<DeviceStatus>() ;
+    private int m_currentPage = 1 ;
+    private boolean isFresh = false ;
+    private String m_cunId ;
+    private String m_sContent ;
+    private Context m_Context;
+    private PullToRefreshLayout m_pullToRefreshLayout ;
+    private PullableListView m_pListVw ;
+    private WarnDeviceStatusAdapter deviceStatusAdapter;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_warn_devicestatus);
+        m_Context = DeviceWorkWarnActivity.this ;
+        setupView() ;
+        setTitlebar("设备工况报警");
+        //wellNos="654003001006, 654003001004";//测试井号
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String wellNos=  getIntent().getStringExtra("wellNos");
+        LogUtils.e("DeviceWorkWarn","wellnos==="+wellNos);
+        //wellNos="654003001006, 654003001004";//测试井号
+        if (wellNos!=null&&netType!= AppUtils.TYPE_NET_WORK_DISABLED){
+            if (m_dS_List.size()==0){
+                queryWarnWellByType(wellNos,"deviceWorkWarn");
+            }
+        }
+    }
+
+    private void setupView() {
+        m_pullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.pl_refresh_warn_deviceStatus) ;
+        m_pullToRefreshLayout.setOnRefreshListener(new MyListener());
+        m_pListVw = (PullableListView) m_pullToRefreshLayout.findViewById(R.id.lv_info_warn_deviceStatus) ;
+        m_pListVw.setOnItemClickListener(new itemListener());
+    }
+
+    @Override
+    protected void getWellInfoByScontent(String sContent) {
+        this.m_sContent = sContent ;
+        m_dS_List.clear();
+        m_currentPage = 1 ;
+        getWellInfo(sContent, false, true);
+    }
+
+    @Override
+    protected void getWellInfoByCunId(String cunId) {
+        this.m_cunId=cunId;
+        m_currentPage = 1 ;
+        m_dS_List.clear();
+        getWellInfo(cunId,true,false);
+    }
+
+    /**
+     *
+     */
+    protected void getWellInfo(String content, boolean fromCunid, boolean fromScontent) {
+        String url = BASEIP + "/well/queryDeviceStateWarn" ;
+        RequestParams requestParams = new RequestParams(url) ;
+        requestParams.addBodyParameter("userId", "admin");
+        requestParams.addBodyParameter("eventType", "deviceWorkWarn");
+        if (fromCunid) {
+            requestParams.addBodyParameter("areaCode", content);
+        }else if (fromScontent) {
+            requestParams.addBodyParameter("sContent", content);
+        }
+        requestParams.addParameter("typeFlag",0);
+        requestParams.addParameter("currentPage", m_currentPage);
+        requestParams.addParameter("count", 20);
+        LogUtils.e("sjt","数据为"+requestParams);
+        x.http().post(requestParams, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                getDeviceWorkWarnSuccess(result);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                ToastUtils.show(m_Context, "服务器请求异常");
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+
+        });
+    }
+
+    /**
+     * 按报警类型查询报警列表（井列表）
+     * 接口为开发（平台）
+     */
+    private void queryWarnWellByType(String wellNos,String type){
+        String url=BASEIP+"/well/queryWarnWellByType";
+        RequestParams params=new RequestParams(url);
+        params.addBodyParameter("userId","admin");
+        params.addBodyParameter("wellNoS",wellNos);//机井编码集合
+        params.addBodyParameter("type",type);
+        params.addParameter("currentPage",1);
+        params.addParameter("count",20);
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                getDeviceWorkWarnSuccess(result);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                ToastUtils.show(m_Context,"服务器异常");
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
+    private void getDeviceWorkWarnSuccess(String result) {
+        try {
+            JSONObject jsonResult = new JSONObject(result) ;
+            LogUtils.e("DeviceWorkWarnActivity", "返回数据" + result);
+            int code = jsonResult.getInt("code") ;
+            if (code == 1) {
+                if (isFresh) {
+                    m_dS_List.clear();
+                }
+                Gson gson = new Gson() ;
+                String data = jsonResult.getString("result") ;
+                m_listCache = gson.fromJson(data, new TypeToken<List<DeviceStatus>>(){}.getType()) ;
+                m_dS_List.addAll(m_listCache) ;
+                m_listCache.clear();
+                deviceStatusAdapter = new WarnDeviceStatusAdapter(m_Context, m_dS_List);
+                m_pListVw.setAdapter(deviceStatusAdapter);
+                deviceStatusAdapter.notifyDataSetChanged();
+            }else {
+                if (m_dS_List.size() == 0) {
+                    ToastUtils.show(m_Context, "查询不到数据!");
+                    deviceStatusAdapter = new WarnDeviceStatusAdapter(m_Context, m_dS_List);
+                    deviceStatusAdapter.notifyDataSetChanged();
+                }else {
+                    ToastUtils.show(m_Context, "数据加载到底!");
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private class MyListener implements PullToRefreshLayout.OnRefreshListener{
+        @Override
+        public void onRefresh(final PullToRefreshLayout pullToRefreshLayout) {
+            new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    m_currentPage = 1 ;
+                    isFresh = true ;
+                    if (flagQueryCun)
+                        getWellInfo(m_cunId,true,false);
+                    if (flagSearch)
+                        getWellInfo(m_sContent,false,true);
+                    //告诉控件,刷新完毕!
+                    pullToRefreshLayout.refreshFinish(PullToRefreshLayout.SUCCEED);
+                }
+            }.sendEmptyMessageDelayed(0, 500) ;
+        }
+
+        @Override
+        public void onLoadMore(final PullToRefreshLayout pullToRefreshLayout) {
+            new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    m_currentPage++ ;
+                    isFresh = false ;
+                    if (flagQueryCun)
+                        getWellInfo(m_cunId,true,false);
+                    if (flagSearch)
+                        getWellInfo(m_sContent,false,true);
+                    //告诉控件加载完毕
+                    pullToRefreshLayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
+                }
+            }.sendEmptyMessageDelayed(0, 500) ;
+        }
+    }
+
+    private class itemListener implements PullableListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            Intent intent = new Intent() ;
+            intent.setClass(m_Context, DeviceStatusListActivity.class) ;
+            Bundle bundle=new Bundle();
+            bundle.putSerializable("DeviceStatus", m_dS_List.get(position));
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+    }
+}

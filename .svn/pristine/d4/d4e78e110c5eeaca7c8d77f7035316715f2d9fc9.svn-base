@@ -1,0 +1,66 @@
+<resources>
+    <string name="app_name">"农业灌溉"</string>
+    <string name="txtVersion">版本</string>
+
+    <!--下拉上拉刷新-->
+    <string name="pull_to_refresh">下拉刷新</string>
+    <string name="release_to_refresh">释放立即刷新</string>
+    <string name="refreshing">正在刷新&#8230;</string>
+    <string name="refresh_succeed">刷新成功</string>
+    <string name="refresh_fail">刷新失败</string>
+    <string name="pullup_to_load">上拉加载更多</string>
+    <string name="release_to_load">释放立即加载</string>
+    <string name="loading">正在加载&#8230;</string>
+    <string name="load_succeed">加载成功</string>
+    <string name="load_fail">加载失败</string>
+    <!--下拉上拉刷新 end-->
+
+    <!--高德地图InfoWindows-->
+    <string name="wellNo">机井编码:</string>
+    <string name="wellName">机井名称:</string>
+    <string name="wellUser">机井户主:</string>
+    <!--end-->
+    <string name="waterSurplus">水余量:</string>
+    <string name="elecSurplus">电余量:</string>
+    <string name="yearElecConsum">年累计用电量:</string>
+    <string name="yearWaterConsum">年累计用水量:</string>
+    <string name="yearPlanWaterConsum">年计划用水量:</string>
+    <string name="pumpClosing">水泵关闭中...</string>
+    <string name="pumpOpen">水泵开启</string>
+    <string name="pumpClosed">水泵关闭</string>
+    <string name="deviceStatusRtu">RTU:</string>
+    <string name="deviceStatusFlowmeter">流量计:</string>
+    <string name="deviceStatusElectMeter">电表:</string>
+
+    <string name="openPumpRecord">开泵记录</string>
+    <string name="openBoxRecord">开箱记录</string>
+    <string name="rechargeRecord">充值记录</string>
+    <string name="faultRecord">故障记录</string>
+    <string name="mapLocation">地图定位</string>
+    <string name="yearMonthUse">年月用量</string>
+
+    <string name="image_description">图片</string>
+    
+    <string name="rtuNo">RTU编码 </string>
+    <string name="rtuManuFactures">RTU厂家 </string>
+    <string name="rtuModel">RTU型号 </string>
+    <string name="rtuGood">RTU正常 </string>
+    <string name="rtuFault">RTU故障 </string>
+    <string name="rtuOffLine">RTU离线 </string>
+    <string name="rtuBatLow">RTU蓄电池电压低</string>
+    <string name="rtuLossElec">RTU掉电(220v市电停电)</string>
+
+    <string name="flowmeterGood">流量计正常</string>
+    <string name="flowmeterBad">流量计故障</string>
+    <string name="fmeterVoLow">流量计电压低</string>
+    <string name="flowMeterNo">流量计编码 </string>
+    <string name="flowMeterFactures">流量计厂家 </string>
+    <string name="flowMeterModel">流量计型号 </string>
+
+    <string name="electMeterGood">电表正常</string>
+    <string name="electMeterBad">电表故障</string>
+    <string name="electMeterNo">电表编码 </string>
+    <string name="electMeterFactures">电表厂家 </string>
+    <string name="electMeterModel">电表型号 </string>
+
+</resources>

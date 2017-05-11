@@ -1,0 +1,222 @@
+package com.automic.app.activity;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.Nullable;
+
+import com.automic.app.R;
+import com.automic.app.adapter.WarnWaterEleclessAdapter;
+import com.automic.app.bean.WaterEleclessWarn;
+import com.automic.app.utils.AppUtils;
+import com.automic.app.utils.LogUtils;
+import com.automic.app.utils.ToastUtils;
+import com.automic.app.view.pullpushview.PullToRefreshLayout;
+import com.automic.app.view.pullpushview.PullableListView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.automic.app.bean.Constant.BASEIP;
+
+/**
+ * Created by qulus on 2017/4/12 0012.
+ */
+
+public class WaterEleclessWarnActivity extends BaseActivityWarn {
+    private List<WaterEleclessWarn> m_wEl_List = new ArrayList<WaterEleclessWarn>() ;
+    private List<WaterEleclessWarn> m_listCache = new ArrayList<WaterEleclessWarn>() ;
+
+    private int m_currentPage = 1 ;
+    private boolean m_isFresh = false ;
+    private String m_cunId ;
+    private String m_sContent ;
+    private Context m_Context ;
+
+    private PullToRefreshLayout m_pullToRefreshLayout ;
+    private PullableListView m_pullableListView ;
+    private WarnWaterEleclessAdapter waterEleclessAdapter;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_warn_waterelec_less);
+        m_Context = WaterEleclessWarnActivity.this ;
+        setupView() ;
+        setTitlebar("水电不足报警");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String wellNos=  getIntent().getStringExtra("wellNos");
+        LogUtils.e("WaterEleclessWarn","wellnos==="+wellNos);
+        if (wellNos!=null&&netType!= AppUtils.TYPE_NET_WORK_DISABLED){
+            queryWarnWellByType(wellNos,"waterElecless");
+        }
+    }
+
+    private void setupView() {
+        m_pullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.pl_refresh_warn_waterElecless) ;
+        m_pullToRefreshLayout.setOnRefreshListener(new MyListener());
+        m_pullableListView = (PullableListView) m_pullToRefreshLayout.findViewById(R.id.lv_info_warn_waterElecless) ;
+    }
+
+    @Override
+    protected void getWellInfoByScontent(String sContent) {
+        this.m_sContent = sContent ;
+        m_currentPage = 1 ;
+        m_wEl_List.clear();
+        getWellInfo(m_sContent, false, true);
+    }
+
+    @Override
+    protected void getWellInfoByCunId(String cunId) {
+        this.m_cunId = cunId;
+        m_currentPage = 1 ;
+        m_wEl_List.clear();
+        getWellInfo(cunId, true, false);
+    }
+
+    protected void getWellInfo(String content, boolean fromCunid, boolean fromScontent) {
+        String url = BASEIP + "/well/querywaterEleclessWarn" ;
+        RequestParams requestParams = new RequestParams(url) ;
+        requestParams.addBodyParameter("userId", "admin");
+        if (fromCunid) {
+            requestParams.addBodyParameter("areaCode", content);
+        }else if (fromScontent) {
+            requestParams.addBodyParameter("sContent", content);
+        }
+        requestParams.addParameter("currentPage", m_currentPage);
+        requestParams.addParameter("count", 20);
+        x.http().post(requestParams, new Callback.CommonCallback<String>(){
+            @Override
+            public void onSuccess(String result) {
+                getWaterEleclessSuccess(result);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                ToastUtils.show(m_Context, "服务器异常");
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        }) ;
+    }
+
+    /**
+     * 按报警类型查询报警列表（井列表）
+     * 接口为开发（平台）
+     */
+    private void queryWarnWellByType(String wellNos,String type){
+        String url=BASEIP+"/well/queryWarnWellByType";
+        RequestParams params=new RequestParams(url);
+        params.addBodyParameter("userId","admin");
+        params.addBodyParameter("wellNoS",wellNos);//机井编码集合
+        params.addBodyParameter("type",type);
+        params.addParameter("currentPage",1);
+        params.addParameter("count",20);
+        x.http().get(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                getWaterEleclessSuccess(result);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                ToastUtils.show(m_Context,"服务器异常");
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
+    private void getWaterEleclessSuccess(String result) {
+        try {
+            JSONObject jsonResult = new JSONObject(result) ;
+            int code = jsonResult.getInt("code") ;
+            if (code == 1) {
+                if (m_isFresh)
+                    m_wEl_List.clear();
+                Gson gson = new Gson() ;
+                String data = jsonResult.getString("result") ;
+                LogUtils.e("WaterEleclessWarnActivity", "返回数据" + data);
+                m_listCache = gson.fromJson(data, new TypeToken<List<WaterEleclessWarn>>(){}.getType()) ;
+                m_wEl_List.addAll(m_listCache) ;
+                m_listCache.clear();
+                waterEleclessAdapter = new WarnWaterEleclessAdapter(m_Context, m_wEl_List);
+                m_pullableListView.setAdapter(waterEleclessAdapter);
+                waterEleclessAdapter.notifyDataSetChanged();
+            }else {
+                if (m_wEl_List.size() == 0) {
+                    ToastUtils.show(m_Context, "查询不到数据!");
+                    waterEleclessAdapter = new WarnWaterEleclessAdapter(m_Context, m_wEl_List);
+                    waterEleclessAdapter.notifyDataSetChanged();
+                }else {
+                    ToastUtils.show(m_Context, "数据加载到底!");
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private class MyListener implements PullToRefreshLayout.OnRefreshListener {
+        @Override
+        public void onRefresh(final PullToRefreshLayout pullToRefreshLayout) {
+            new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    m_currentPage = 1 ;
+                    m_isFresh = true ;
+                    if (flagQueryCun)
+                        getWellInfo(m_cunId, true, false);
+                    if (flagSearch)
+                        getWellInfo(m_sContent, false, true);
+                    pullToRefreshLayout.refreshFinish(PullToRefreshLayout.SUCCEED);
+                }
+            }.sendEmptyMessageDelayed(0, 500) ;
+        }
+
+        @Override
+        public void onLoadMore(final PullToRefreshLayout pullToRefreshLayout) {
+           new Handler() {
+               @Override
+               public void handleMessage(Message msg) {
+                   m_currentPage++ ;
+                   m_isFresh = false ;
+                   if (flagQueryCun)
+                       getWellInfo(m_cunId, true, false);
+                   if (flagSearch)
+                       getWellInfo(m_sContent, false, true);
+                   pullToRefreshLayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
+               }
+           }.sendEmptyMessageDelayed(0, 500) ;
+        }
+    }
+}

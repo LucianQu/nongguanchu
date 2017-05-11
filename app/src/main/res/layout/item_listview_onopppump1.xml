@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/ir1_title"
+        android:layout_width="match_parent"
+        android:background="@drawable/shape_top2_green"
+        android:orientation="horizontal"
+        android:layout_height="22dp">
+        <TextView
+            android:id="@+id/ir1_onPumpTitleTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/common_drawablePadding10"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/white"
+            android:text="开泵时间"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/ir1_onPumptime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/common_drawablePadding10"
+            android:layout_toRightOf="@id/ir1_onPumpTitleTime"
+            android:textColor="@color/white"
+            android:text="2017年1月12日 11:22"
+            android:textSize="@dimen/text14" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/common_drawablePadding5"
+        android:paddingTop="@dimen/common_drawablePadding5"
+        android:background="@color/background_white"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:layout_marginLeft="5dp"
+            android:layout_height="22dp">
+            <TextView
+                android:id="@+id/ir1_offPumpTitleTime"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/common_drawablePadding5"
+                android:paddingRight="@dimen/common_drawablePadding5"
+                android:gravity="center_vertical"
+                android:background="#999999"
+                android:textColor="@color/white"
+                android:text="关泵时间"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/ir1_offPumpTime"
+                android:layout_width="wrap_content"
+                android:paddingLeft="@dimen/common_drawablePadding5"
+                android:gravity="center|left"
+                android:textColor="#999999"
+                android:layout_height="match_parent"
+                android:text="2017年1月12日 11:22"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="@dimen/common_drawablePadding3"
+            android:layout_height="22dp">
+            <TextView
+                android:id="@+id/ir1_irriStatisTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/common_drawablePadding5"
+                android:paddingRight="@dimen/common_drawablePadding5"
+                android:gravity="center_vertical"
+                android:background="#999999"
+                android:textColor="@color/white"
+                android:text="灌溉统计"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/ir1_irriStatis"
+                android:layout_width="wrap_content"
+                android:paddingLeft="@dimen/common_drawablePadding5"
+                android:gravity="center|left"
+                android:textColor="@color/text_color_dark_gray"
+                android:layout_height="match_parent"
+                android:text=" "
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

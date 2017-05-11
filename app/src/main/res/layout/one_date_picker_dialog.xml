@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="180dp"
+    android:layout_height="wrap_content"
+  android:layout_gravity="center_horizontal"
+    android:orientation="vertical">
+        <DatePicker
+            android:id="@+id/datePickerStart"
+            android:layout_width="match_parent"
+            android:background="@color/black"
+            android:datePickerMode="spinner"
+            android:layout_height="150dp"
+            android:calendarViewShown="false" />
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/black"
+            android:layout_height="1dp"></View>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="@color/black"
+                    android:background="@color/background_gray"
+                    android:text="取消" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:background="@color/black"></View>
+
+                <Button
+                    android:id="@+id/btn_comfirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="@color/black"
+                    android:background="@color/background_gray"
+                    android:text="确定" />
+        </LinearLayout>
+</LinearLayout>

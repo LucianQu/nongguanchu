@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/titlebar_view"
+        style="@style/tab_titlebar">
+
+        <LinearLayout
+            android:id="@+id/ll_back"
+            android:layout_width="54dp"
+            android:layout_height="match_parent"
+            android:onClick="onReturnClick"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/imgbtn_back"
+                style="@style/TitleBack"
+                android:layout_gravity="center_vertical"
+                android:focusable="false" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="返回" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:padding="10dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="3.5dp"
+            android:layout_toRightOf="@+id/ll_back"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:background="@drawable/shape_4_white"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tvw_spinner_xiang"
+                    android:layout_weight="1"
+                    android:text="选择乡"
+                    android:textColor="@color/background_dark_gray"
+                    android:textSize="@dimen/text14"/>
+
+                <TextView
+                    android:layout_width="7.5dp"
+                    android:paddingRight="@dimen/common_drawablePadding3"
+                    android:background="@mipmap/ic_down_more"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="5dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:orientation="horizontal"
+                android:layout_marginLeft="3.5dp"
+                android:background="@drawable/shape_4_white"
+                android:layout_weight="3">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/tvw_spinner_cun"
+                    android:text="选择村"
+                    android:textColor="@color/background_dark_gray"
+                    android:textSize="@dimen/text14"/>
+
+                <TextView
+                    android:layout_width="7.5dp"
+                    android:background="@mipmap/ic_down_more"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="5dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>

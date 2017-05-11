@@ -1,0 +1,186 @@
+package com.automic.app.activity;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.Nullable;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+
+import com.automic.app.R;
+import com.automic.app.bean.Constant;
+import com.automic.app.utils.LogUtils;
+import com.automic.app.utils.NormalLoadPictrue;
+import com.automic.app.utils.ToastUtils;
+
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
+import java.io.File;
+
+/**
+ * Created by qulus on 2017/3/31 0031.
+ */
+
+public class LoadPictrueActivity extends BaseActivity {
+    private ImageView m_loadIme ;
+    public String picUrl = "" ;
+    private String filepath;
+    private ProgressBar progressBar;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_loadpicture);
+        setupView() ;
+    }
+    private void setupView() {
+        setTitlebarBackground(R.color.titlebar_gray);//修改titlebar颜色
+        setRightButtonVisibility(ImageView.GONE);
+
+        setTitleRightViewVisibility(ImageView.GONE);
+        //
+        m_loadIme = (ImageView) findViewById(R.id.ob_imeload) ;
+        progressBar = (ProgressBar)findViewById(R.id.pb_loading);
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if(null == bundle) {
+            ToastUtils.show(LoadPictrueActivity.this,"图片地址为空!");
+        }else {
+            picUrl = bundle.getString("LoadPictrueActivity");
+            String wellNo=bundle.getString("wellNo");
+            String wellName=bundle.getString("wellName");
+            setTitlebar(wellName);
+            //setTitlebar("("+wellNo+")"+wellName);
+            //new NormalLoadPictrue().getPicture(picUrl, m_loadIme);
+            downloadprogressfile();
+        }
+
+    }
+
+    private void downloadprogressfile() {
+        //文件下载地址
+        String url= Constant.BASEIP+"/image/downloadFileForAbsolutePath?url="+picUrl;
+        //String url="http://172.16.60.45:8080/appService/image/downloadFileForAbsolutePath?url=D:\\DTemp\\hydro_images\\11000030583\\201703\\11000030583_20170330162043_0.jpg";
+        //文件保存在本地的路径
+        filepath = Environment.getExternalStorageDirectory()+ File.separator+"test1.jpg";
+        DownLoadFile(url, filepath,new MyProgressCallBack<File>(){
+
+            private int currentProgress;
+
+            @Override
+            public void onSuccess(File result) {
+                super.onSuccess(result);
+                LogUtils.e("sjt","onsuccess");
+                if (currentProgress==100){
+                    Bitmap bm = BitmapFactory.decodeFile(filepath);
+                    m_loadIme.setImageBitmap(bm);//不会变形
+                    progressBar.setProgress(100);
+                }
+
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                super.onError(ex, isOnCallback);
+
+            }
+            @Override
+            public void onLoading(long total, long current,
+                                  boolean isDownloading) {
+                super.onLoading(total, current, isDownloading);
+//                progressBar.setMax(100);
+                currentProgress = (int)(100*current/total);
+                if (isDownloading){
+                    LogUtils.e("sjt","正在下载"+currentProgress);
+}
+                progressBar.setProgress(currentProgress);
+            }
+        });
+    }
+
+    /**
+     * 下载文件
+     * @param <T>
+     */
+    public static <T> Callback.Cancelable DownLoadFile(String url, String filepath, Callback.CommonCallback<T> callback){
+        RequestParams params=new RequestParams(url);
+        //设置断点续传
+        params.setAutoResume(true);
+        params.setSaveFilePath(filepath);
+        Callback.Cancelable cancelable = x.http().get(params, callback);
+        return cancelable;
+    }
+
+    public class MyCallBack<ResultType> implements Callback.CommonCallback<ResultType>{
+
+        @Override
+        public void onSuccess(ResultType result) {
+            //可以根据公司的需求进行统一的请求成功的逻辑处理
+        }
+
+        @Override
+        public void onError(Throwable ex, boolean isOnCallback) {
+            //可以根据公司的需求进行统一的请求网络失败的逻辑处理
+        }
+
+        @Override
+        public void onCancelled(CancelledException cex) {
+
+        }
+
+        @Override
+        public void onFinished() {
+
+        }
+
+
+    }
+
+    /**
+     * 加进度条的下载
+     * @param <ResultType>
+     */
+    public class MyProgressCallBack<ResultType> implements Callback.ProgressCallback<ResultType>{
+
+        @Override
+        public void onSuccess(ResultType result) {
+            //根据公司业务需求，处理相应业务逻辑
+        }
+
+        @Override
+        public void onError(Throwable ex, boolean isOnCallback) {
+            //根据公司业务需求，处理相应业务逻辑
+        }
+
+        @Override
+        public void onCancelled(CancelledException cex) {
+
+        }
+
+        @Override
+        public void onFinished() {
+
+        }
+
+        @Override
+        public void onWaiting() {
+
+        }
+
+        @Override
+        public void onStarted() {
+
+        }
+
+        @Override
+        public void onLoading(long total, long current, boolean isDownloading) {
+
+        }
+
+    }
+}
+

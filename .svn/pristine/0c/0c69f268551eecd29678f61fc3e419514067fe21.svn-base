@@ -1,0 +1,197 @@
+package com.automic.app.activity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.automic.app.R;
+import com.automic.app.bean.WellDeviceStatus;
+import com.automic.app.utils.ToastUtils;
+
+/**
+ * Created by qulus on 2017/3/29 0029.
+ */
+
+public class DeviceStatusActivity extends BaseActivity {
+
+    private LinearLayout m_rtuTiBackgd;
+    private LinearLayout m_flowMTiBackgd;
+    private LinearLayout m_electMTiBackgd;
+
+    private LinearLayout m_rtuCoBackgd;
+    private LinearLayout m_flowMCoBackgd;
+    private LinearLayout m_electMCoBackgd;
+
+    private TextView m_rtuTitle ;
+    private TextView m_rtuNo ;
+    private TextView m_rtuFactory ;
+    private TextView m_rtuModel ;
+    private TextView m_rtuFaultInfo ;
+
+    private TextView m_flowMTitle;
+    private TextView m_flowMNo;
+    private TextView m_flowMFactory;
+    private TextView m_flowMModel;
+    private TextView m_flowMFaultInfo;
+
+    private TextView m_electMTitle;
+    private TextView m_electMNo;
+    private TextView m_electMFactory;
+    private TextView m_electMModel;
+    private TextView m_electMFaultInfo;
+
+    private WellDeviceStatus m_wdStatusBean = new WellDeviceStatus();
+
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_devicestatus);
+        initData() ;
+        if (null != m_wdStatusBean) {
+            setupView();
+        }
+    }
+
+    private void initData() {
+        getExtrasMapData() ;
+    }
+
+    private void getExtrasMapData() {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if(null == bundle) {
+            ToastUtils.show(DeviceStatusActivity.this,"工况数据为空!");
+            m_wdStatusBean = null ;
+        }else {
+            //m_wLBeanList = bundle.getParcelableArrayList("GaodeMapWellInfo") ;
+            m_wdStatusBean = (WellDeviceStatus) bundle.getSerializable("WellDeviceStatus");
+        }
+    }
+
+    private void setupView() {
+        m_rtuTiBackgd = (LinearLayout) findViewById(R.id.ds_rtuTitleBackground) ;
+        m_flowMTiBackgd = (LinearLayout) findViewById(R.id.ds_flowMTitleBackground) ;
+        m_electMTiBackgd = (LinearLayout) findViewById(R.id.ds_electMTitleBackground) ;
+
+        m_rtuCoBackgd = (LinearLayout) findViewById(R.id.ds_rtuCoBackgd) ;
+        m_flowMCoBackgd = (LinearLayout) findViewById(R.id.ds_flowMCoBackgd) ;
+        m_electMCoBackgd = (LinearLayout) findViewById(R.id.ds_electMCoBackgd) ;
+
+        m_rtuTitle = (TextView) findViewById(R.id.ds_rtuTitle) ;
+        m_rtuNo = (TextView) findViewById(R.id.ds_rtuNo) ;
+        m_rtuFactory = (TextView) findViewById(R.id.ds_rtuFactures) ;
+        m_rtuModel = (TextView) findViewById(R.id.ds_rtuModel) ;
+        m_rtuFaultInfo = (TextView) findViewById(R.id.ds_rtuFaultInfo) ;
+
+        m_flowMTitle = (TextView) findViewById(R.id.ds_flowMeterTitle) ;
+        m_flowMNo = (TextView) findViewById(R.id.ds_flowMeterNo) ;
+        m_flowMFactory = (TextView) findViewById(R.id.ds_flowMeterFactures) ;
+        m_flowMModel = (TextView) findViewById(R.id.ds_flowMeterModel) ;
+        m_flowMFaultInfo = (TextView) findViewById(R.id.ds_flowMeterFaultInfo) ;
+
+        m_electMTitle = (TextView) findViewById(R.id.ds_electMeterTitle) ;
+        m_electMNo = (TextView) findViewById(R.id.ds_electMeterNo) ;
+        m_electMFactory = (TextView) findViewById(R.id.ds_electMeterFactures) ;
+        m_electMModel = (TextView) findViewById(R.id.ds_electMeterModel) ;
+        m_electMFaultInfo = (TextView) findViewById(R.id.ds_electMeterFaultInfo) ;
+        if(m_wdStatusBean == null) {
+            adapterView(m_rtuTiBackgd, m_rtuCoBackgd, R.drawable.shape_top2_pink,
+                    m_rtuNo, m_rtuFactory, m_rtuModel, m_rtuFaultInfo,false,null);
+            m_rtuTitle.setText("无数据!");
+        }else {
+            if("rtuGood".equals(m_wdStatusBean.getStateType()[0])) {
+                m_rtuTiBackgd.setBackgroundResource(R.drawable.shape_top2_green);
+                m_rtuTitle.setText(getResources().getString(R.string.rtuGood));
+            }else if("rtuOffLine".equals(m_wdStatusBean.getStateType()[0])) {
+                String[] sArray = m_wdStatusBean.getStateDetail()[0].split(":");
+                m_rtuTitle.setText(getResources().getString(R.string.rtuOffLine));
+                adapterView(m_rtuTiBackgd, m_rtuCoBackgd, R.drawable.shape_top2_gray,
+                        m_rtuNo, m_rtuFactory, m_rtuModel, m_rtuFaultInfo,true,sArray);
+            }else if("rtuLossElec".equals(m_wdStatusBean.getStateType()[0])) {
+                String[] sArray = m_wdStatusBean.getStateDetail()[0].split(":");
+                m_rtuTitle.setText(getResources().getString(R.string.rtuLossElec));
+                adapterView(m_rtuTiBackgd, m_rtuCoBackgd, R.drawable.shape_top2_pink,
+                        m_rtuNo, m_rtuFactory, m_rtuModel, m_rtuFaultInfo,true,sArray);
+            }else if("rtuBatLow".equals(m_wdStatusBean.getStateType()[0])) {
+                String[] sArray = m_wdStatusBean.getStateDetail()[0].split(":");
+                m_rtuTitle.setText(getResources().getString(R.string.rtuBatLow));
+                adapterView(m_rtuTiBackgd, m_rtuCoBackgd, R.drawable.shape_top2_pink,
+                        m_rtuNo, m_rtuFactory, m_rtuModel, m_rtuFaultInfo,true,sArray);
+            }
+        }
+
+        if (m_wdStatusBean == null) {
+            adapterView(m_flowMTiBackgd, m_flowMCoBackgd, R.drawable.shape_top2_pink,
+                    m_flowMNo, m_flowMFactory, m_flowMModel,m_flowMFaultInfo,false,null);
+            m_flowMTitle.setText("无数据!");
+        }else{
+            if("flowmeterGood".equals(m_wdStatusBean.getStateType()[1])) {
+                m_flowMTiBackgd.setBackgroundResource(R.drawable.shape_top2_green);
+                m_flowMTitle.setText(getResources().getString(R.string.flowmeterGood));
+            }else if("flowmeterBad".equals(m_wdStatusBean.getStateType()[1])) {
+                String[] sArray = m_wdStatusBean.getStateDetail()[1].split(":");
+                m_flowMTitle.setText(getResources().getString(R.string.flowmeterBad));
+                adapterView(m_flowMTiBackgd, m_flowMCoBackgd, R.drawable.shape_top2_pink,
+                        m_flowMNo, m_flowMFactory, m_flowMModel, m_flowMFaultInfo,true,sArray);
+            }else if("fmeterVoLow".equals(m_wdStatusBean.getStateType()[1])) {
+                String[] sArray = m_wdStatusBean.getStateDetail()[1].split(":");
+                m_flowMTitle.setText(getResources().getString(R.string.fmeterVoLow));
+                adapterView(m_flowMTiBackgd, m_flowMCoBackgd, R.drawable.shape_top2_pink,
+                        m_flowMNo, m_flowMFactory, m_flowMModel,m_flowMFaultInfo,true,sArray);
+            }
+        }
+        if (m_wdStatusBean == null) {
+            adapterView(m_electMTiBackgd,m_electMCoBackgd, R.drawable.shape_top2_pink,
+                    m_electMNo, m_electMFactory, m_electMModel, m_electMFaultInfo,false,null) ;
+            m_electMTitle.setText("无数据!");
+        }else {
+            if("electMeterGood".equals(m_wdStatusBean.getStateType()[2])) {
+                m_electMTiBackgd.setBackgroundResource(R.drawable.shape_top2_green);
+                m_electMTitle.setText(getResources().getString(R.string.electMeterGood));
+            }else if("electMeterBad".equals(m_wdStatusBean.getStateType()[2])) {
+                String[] sArray = m_wdStatusBean.getStateDetail()[2].split(":");
+                m_electMTitle.setText(getResources().getString(R.string.electMeterBad));
+                adapterView(m_electMTiBackgd,m_electMCoBackgd, R.drawable.shape_top2_pink,
+                        m_electMNo, m_electMFactory, m_electMModel, m_electMFaultInfo,true,sArray) ;
+            }
+        }
+
+        //开关泵字段被删除
+     /*   if("pumpOff".equals(m_wdStatusBean.getStateType()[3])) {
+            String[] sArray = m_wdStatusBean.getStateDetail()[3].split(":");
+        }else if("pumpOn".equals(m_wdStatusBean.getStateType()[3])) {
+            String[] sArray = m_wdStatusBean.getStateDetail()[3].split(":");
+        }*/
+    }
+    /**
+     *适配界面
+     */
+    void adapterView(LinearLayout backgroundTitle,LinearLayout backgroundContent,int colorId, TextView no, TextView factory,
+                     TextView model,TextView defaultInfo, boolean isShow, String[] sArray) {
+        String info = "" ;
+        if(isShow) {
+            backgroundTitle.setBackgroundResource(colorId);
+            backgroundContent.setVisibility(View.VISIBLE);
+            no.setText(sArray[0]);
+            factory.setText(sArray[1]);
+            model.setText(sArray[2]);
+            if (sArray.length < 3) {
+                ToastUtils.show(DeviceStatusActivity.this,"报警信息为空!");
+            }else {
+                for (int i = 3; i < sArray.length; i++) {
+                    info += sArray[i] + "\n";
+                }
+                defaultInfo.setVisibility(View.VISIBLE);
+                defaultInfo.setText(info);
+            }
+        }else {
+            backgroundTitle.setVisibility(View.GONE);
+            backgroundContent.setVisibility(View.GONE);
+            defaultInfo.setVisibility(View.GONE);
+        }
+    }
+}

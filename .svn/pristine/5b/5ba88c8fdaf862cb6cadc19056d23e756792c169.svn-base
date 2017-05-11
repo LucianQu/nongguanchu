@@ -1,0 +1,812 @@
+package com.automic.app.activity;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.automic.app.R;
+import com.automic.app.bean.ActionItem;
+import com.automic.app.bean.DeviceStatus;
+import com.automic.app.bean.OnOffPumpRecoder;
+import com.automic.app.bean.WellInfo;
+import com.automic.app.utils.AppUtils;
+import com.automic.app.utils.LogUtils;
+import com.automic.app.utils.SharepreferenceUtils;
+import com.automic.app.utils.ToastUtils;
+import com.automic.app.view.TitlePopup;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.automic.app.bean.Constant.BASEIP;
+import static com.automic.app.bean.Constant.FOR_SEARCH_WELL_REQUST_CODE;
+import static com.automic.app.bean.Constant.SEARCH_WELL_RESULT_CODE;
+
+/**
+ * Created by sujingtai on 2017/3/24 0024.
+ * 井信息界面
+ */
+
+public class WellInfoActivity extends BaseActivity {
+    public static WellInfoActivity instance = null ;
+    private Context m_Context;
+    private TitlePopup m_titlePopup ;
+
+    private TextView m_wellNo ;
+    private TextView m_wellName ;
+    private TextView m_wellUser ;
+    private boolean m_wellOnline = false;
+
+    private TextView m_wellAddress ;
+    private RelativeLayout m_wellInfoMapTitle ;
+
+    private TextView m_waterSurplus ;
+    private TextView m_electSurplus ;
+    private TextView m_yearElectConsum ;
+    private TextView m_yearWaterConsum ;
+    private TextView m_yearPlanWaterConsum ;
+    private ImageView m_pumpOperate ;
+    private TextView m_pumpWorkStatus ;
+
+    private ImageView m_rtuStatusIme ;
+    private TextView m_rtuStatusTitle ;
+    private TextView m_rtuStatus ;
+    private ImageView m_flowStatusIme ;
+    private TextView m_flowStatusTitle ;
+    private TextView m_flowMeterStatus ;
+    private ImageView m_electStatusIme ;
+    private TextView m_electStatusTitle ;
+    private TextView m_electMeterStatus ;
+
+    private RelativeLayout m_wellInfoDeviceStatusTitle ;
+    private LinearLayout wellinfo_deviceStatusContent;
+    private List<WellInfo> m_wIBeanList = new ArrayList<WellInfo>();
+    private List<DeviceStatus> m_wDSBeanList = new ArrayList<DeviceStatus>();
+    private String m_rtuType = " ";
+    private String m_flowType = " ";
+    private String m_electType = " ";
+    //private View inputPwDialog = null ;
+
+    public ArrayList<WellInfo> m_wIMapBeanList = new ArrayList<WellInfo>() ;
+    private String currentWellNo = "654003001006";//默认的井编码
+    private int m_wellOnoffStatus ;
+    private  String currentWellName = "飞鸿里" ;
+    private  int currentTypeFlag = 2 ;
+    private  String currentEventType = "deviceWorkWarn";
+    private int m_onOffPumpResult ;
+    private ImageView m_wi_pumponoff_status ;
+    private static boolean m_pumpStatus = false ;
+    private WellInfo m_wellInfo = new WellInfo() ;
+/*    private boolean m_loadSuccess = false ;
+    private TextView m_pump_pw_err;
+    private ImageView m_pump_pw_ensure ;
+    private ImageView m_pump_pw_cancel ;
+    private LinearLayout m_pump_input_page ;
+    private LinearLayout m_pump_wait_page ;
+    private LinearLayout m_pump_success_page ;
+    private LinearLayout m_pump_fail_page ;
+    private EditText m_pump_input_pw ;
+    private String m_pump_input_pW ;*/
+
+    private List<OnOffPumpRecoder> m_onOffBeanList= new ArrayList<OnOffPumpRecoder>() ;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        instance = this ;
+        setContentView(R.layout.activity_wellinfo_homepage);
+        setupView();
+        int type=  AppUtils.checkNetworkType(this);
+        if (type==AppUtils.TYPE_NET_WORK_DISABLED){
+            ToastUtils.show(this,"当前没有网络连接，请连接！");
+            isNotShowNoNet(false);
+            //isNotShowLoading(true) ;
+        }else {
+            getWellDetailsData("admin", currentWellNo);
+            getWellInfoOnoffPump(currentWellNo);
+            getWellDeviceStatusData("admin", currentWellNo, currentEventType, currentTypeFlag);
+            isNotShowLoading(false) ;
+        }
+
+    }
+
+
+    private void isNotShowNoNet(boolean isShow) {
+        if (isShow) {
+            dismissNoNetDialog();
+        }else {
+            openNoNetDialog();
+        }
+    }
+
+    private void isNotShowLoading(boolean isShow) {
+        if (isShow) {
+            dismissDialog();
+        }else {
+            openDialog();
+        }
+    }
+
+    private void setupView() {
+        m_Context = WellInfoActivity.this ;
+        m_wellNo = (TextView) findViewById(R.id.wellInfo_No) ;
+        m_wellName = (TextView) findViewById(R.id.wellInfo_Name) ;
+        m_wellUser = (TextView) findViewById(R.id.wellInfo_User) ;
+
+        m_wellAddress = (TextView) findViewById(R.id.wellinfo_wellAddress) ;
+
+        m_waterSurplus = (TextView) findViewById(R.id.wi_waterSurplus) ;
+        m_electSurplus = (TextView) findViewById(R.id.wi_electSurplus) ;
+        m_yearElectConsum = (TextView) findViewById(R.id.wi_yearElectConsum) ;
+        m_yearWaterConsum = (TextView) findViewById(R.id.wi_yearWaterConsum) ;
+        m_yearPlanWaterConsum = (TextView) findViewById(R.id.wi_yearPlanWaterConsum) ;
+
+        m_rtuStatusIme = (ImageView) findViewById(R.id.wi_deviceStatusRtuIme) ;
+        m_rtuStatusTitle = (TextView) findViewById(R.id.wi_deviceStatusRtuTitle) ;
+        m_rtuStatus = (TextView) findViewById(R.id.wi_deviceStatusRtu) ;
+
+        m_flowStatusIme = (ImageView) findViewById(R.id.wi_deviceStatusFlowIme) ;
+        m_flowStatusTitle = (TextView) findViewById(R.id.wi_deviceStatusFlowTitle) ;
+        m_flowMeterStatus = (TextView) findViewById(R.id.wi_deviceStatusFlowMeter) ;
+
+        m_electStatusIme = (ImageView) findViewById(R.id.wi_deviceStatusElectIme) ;
+        m_electStatusTitle = (TextView) findViewById(R.id.wi_deviceStatusElectTitle) ;
+        m_electMeterStatus = (TextView) findViewById(R.id.wi_deviceStatusElectMeter) ;
+
+        m_wi_pumponoff_status = (ImageView) findViewById(R.id.wi_pump_onoff_status) ;
+        m_pumpWorkStatus = (TextView) findViewById(R.id.wi_pumpWorkStatus) ;
+        /*m_rtuStatusIme.setVisibility(View.VISIBLE);
+        m_rtuStatusTitle.setVisibility(View.VISIBLE);
+        m_rtuStatus.setText("00000000");
+        m_rtuStatus.setVisibility(View.VISIBLE);*/
+
+                //泵操作获取图标
+        m_pumpOperate = (ImageView) findViewById(R.id.wi_pump_onoff_status) ;
+        m_pumpOperate.setOnClickListener(new onClickPumpOperateListener());
+
+        //设置地图标题监听
+        m_wellInfoMapTitle = (RelativeLayout) findViewById(R.id.wellinfo_wellMapTitle) ;
+        m_wellInfoMapTitle.setOnClickListener(new onClickMapTitleListener());
+
+        //设置设备状态标题监听
+        m_wellInfoDeviceStatusTitle = (RelativeLayout) findViewById(R.id.wellinfo_deviceStatusTitle) ;
+        m_wellInfoDeviceStatusTitle.setOnClickListener(new onClickDeviceStatusTitleListener());
+
+        //设置设备状态内容监听
+        wellinfo_deviceStatusContent = (LinearLayout) findViewById(R.id.wi_deviceStatusContent) ;
+        wellinfo_deviceStatusContent.setOnClickListener(new onClickDeviceStatusContentListener());
+
+        //设置+号按钮可见,并添加监听
+        setRightButtonVisibility(View.VISIBLE);
+        setOnRightClickListener(new onClickRightListener());
+
+        //设置标题文本监听
+        setOnTitleTextClickListener(new onClickTitleTextListener());
+
+        //初始化+号视图,设置+号监听
+        m_titlePopup = new TitlePopup(this, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindows_initView() ;
+        m_titlePopup.setItemOnClickListener(new onClickPopupListener());
+
+    }
+
+    /**
+     *获取地图Bean List,进入地图
+     */
+    public void entryGaodeMap() {
+
+        m_wIMapBeanList.clear();
+
+        WellInfo wLBean = new WellInfo( m_wellInfo.getWellName(),
+                m_wellInfo.getWellNo(), m_wellInfo.getAdmin(),
+                0,"1",m_wellInfo.getWellLat(),m_wellInfo.getWellLong(),null,null,
+                null,null,null) ;
+
+        m_wIMapBeanList.add(wLBean);
+
+        Intent intent = new Intent() ;
+        intent.setClass(m_Context, GaodeMapActivity.class) ;
+        intent.putExtra("GaodeMapWellInfo",
+                m_wIMapBeanList);
+
+        startActivity(intent);
+
+    }
+
+    public void openNewActivity(Class<?> cls ,String name, String position) {
+        Intent intent = new Intent() ;
+        intent.setClass(m_Context,cls);
+        if (null != position) {
+            intent.putExtra(name, position) ;
+            intent.putExtra("currentWellNo",currentWellNo);
+            intent.putExtra("currentWellName",currentWellName);
+        }
+        startActivity(intent);
+    }
+
+    /**
+     *标题文本监听
+     */
+
+    public class onClickTitleTextListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+           // ToastUtils.show(m_Context, "onClickTitleTextListener");
+           // Intent intent=new Intent(WellInfoActivity.this,SearchWellActivity.class);
+            Intent intent=new Intent(WellInfoActivity.this,SearchWellOneTimeActivity.class);
+           startActivityForResult(intent,FOR_SEARCH_WELL_REQUST_CODE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==SEARCH_WELL_RESULT_CODE){
+            if (requestCode==FOR_SEARCH_WELL_REQUST_CODE){
+           WellInfo wellInfo= (WellInfo)data.getExtras().getSerializable("wellInfo");
+                m_wellInfo = wellInfo ;
+                setWellInfoDetailFromSearch(wellInfo);
+                getWellDeviceStatusData(null, currentWellNo, currentEventType, currentTypeFlag) ;
+                getWellInfoOnoffPump(currentWellNo);
+            }
+        }
+    }
+
+    /**
+     *泵操作监听
+     */
+    public class onClickPumpOperateListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            //android:windowSoftInputMode="adjustPan|stateVisible|adjustResize"
+            if (m_wellOnline) {
+                Intent intent = new Intent(WellInfoActivity.this, OnOffInputPwActivity.class);
+                intent.putExtra("OnOffInputPwActivity", currentWellNo);
+                startActivity(intent);
+            }else {
+                ToastUtils.show(m_Context, "离线状态下,无法操作!");
+            }
+        }
+    }
+
+    /**
+     *地图标题监听
+     */
+    public class onClickMapTitleListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            entryGaodeMap();
+        }
+    }
+
+    /**
+     *设备状态标题监听
+     */
+    public class onClickDeviceStatusTitleListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            //ToastUtils.show(WellInfoActivity.this, "m_wellInfoDeviceStatusTitle");
+            Intent intent = new Intent() ;
+            intent.setClass(m_Context, DeviceStatusListActivity.class) ;
+            if (m_wDSBeanList.isEmpty()) {
+                intent.putExtra("wellInfoWellName", currentWellName) ;
+            }else {
+                intent.putExtra("DeviceStatus",m_wDSBeanList.isEmpty() ? null : m_wDSBeanList.get(0));
+            }
+            startActivity(intent);
+        }
+    }
+
+    /**
+     *设备状态内容监听
+     */
+    public class onClickDeviceStatusContentListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            //ToastUtils.show(WellInfoActivity.this, "m_wellInfoDeviceStatusContent");
+            Intent intent = new Intent() ;
+            intent.setClass(m_Context, DeviceStatusListActivity.class) ;
+            if (m_wDSBeanList.isEmpty()) {
+                intent.putExtra("wellInfoWellName", currentWellName) ;
+            }else {
+                intent.putExtra("DeviceStatus",m_wDSBeanList.isEmpty() ? null : m_wDSBeanList.get(0));
+            }
+
+            //intent.putExtra("typeFlag", 1) ;
+            startActivity(intent);
+        }
+    }
+
+    /**
+     *onClickRight + 号 监听
+     */
+    public class onClickRightListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            m_titlePopup.show(v);
+        }
+    }
+
+
+    /**
+     *popupWindows窗口点击项监听
+     */
+    public class onClickPopupListener implements TitlePopup.OnItemOnClickListener {
+        @Override
+        public void onItemClick(ActionItem item, int position) {
+            {
+                switch (position) {
+                    case 0:
+                        //开泵记录
+
+                        openNewActivity(RecoderFragmentActivity.class,"RecoderFragmentActivity","0") ;
+                        break;
+                    case 1:
+                        //开箱记录
+                        openNewActivity(RecoderFragmentActivity.class,"RecoderFragmentActivity","1") ;
+                        break;
+                    case 2:
+                        //充值记录
+                        openNewActivity(RecoderFragmentActivity.class,"RecoderFragmentActivity","2") ;
+                        break;
+                    case 3:
+                        //故障记录
+                        openNewActivity(RecoderFragmentActivity.class,"RecoderFragmentActivity","3") ;
+                        break;
+                    case 4:
+                        //地图定位
+                        entryGaodeMap();
+                        break;
+                    case 5:
+                        //年月用量
+                        openNewActivity(RecoderFragmentActivity.class,"RecoderFragmentActivity","4") ;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
+
+    /**
+     *popupWindows初始化视图,添加item
+     */
+    private void popupWindows_initView() {
+        m_titlePopup.addAction(new ActionItem(this, getResources().getString(R.string.openPumpRecord),
+                R.mipmap.openpump_record));
+        m_titlePopup.addAction(new ActionItem(this, getResources().getString(R.string.openBoxRecord),
+                R.mipmap.openbox_record));
+        m_titlePopup.addAction(new ActionItem(this, getResources().getString(R.string.rechargeRecord),
+                R.mipmap.recharge_record));
+        m_titlePopup.addAction(new ActionItem(this, getResources().getString(R.string.faultRecord),
+                R.mipmap.fault_record));
+        m_titlePopup.addAction(new ActionItem(this, getResources().getString(R.string.mapLocation),
+                R.mipmap.map_location));
+        m_titlePopup.addAction(new ActionItem(this, getResources().getString(R.string.yearMonthUse),
+                R.mipmap.yearmonth_use));
+    }
+
+    /**
+     * 获取机井详情数据
+     * @param uId 用户Id
+     * @param wNo 机井编码
+     */
+   private void getWellDetailsData(String uId, String wNo) {
+       String url = BASEIP + "/well/queryWellInfo" ;
+       RequestParams requestParams = new RequestParams(url) ;//网络请求参数实体,设置url
+       if (null != uId) {
+           requestParams.addBodyParameter("userId", uId);   //添加用户Id参数至Body
+       }
+       if (null != wNo) {
+           requestParams.addBodyParameter("wellNo", wNo);   //添加机井编码参数至Body
+       }
+       if(uId == null && wNo == null) {
+           ToastUtils.show(m_Context, "用户Id与机井编码为空!");
+           return;
+       }
+
+       x.http().post(requestParams, new Callback.CommonCallback<String>() {
+           @Override
+           public void onSuccess(String result) {
+               try {
+                   JSONObject jsonObject = new JSONObject(result) ;//根据返回字段,创建JSONObject
+                   int code = jsonObject.getInt("code") ;
+                   if (code == 1) {
+                       Gson gson = new Gson() ;
+                       String data = jsonObject.getString("result") ;
+                       LogUtils.e("wellInfoDetails", "返回数据" + data);
+                       m_wIBeanList.clear();
+                       m_wIBeanList = gson.fromJson(data, new TypeToken<List<WellInfo>>(){}.getType()) ;
+                       LogUtils.e("wIBeanList:","" + m_wIBeanList.size());
+                       m_wellInfo = m_wIBeanList.get(0) ;
+                       isNotShowLoading(true) ;
+                       setWellInfoDetailFromSearch(m_wellInfo);
+                   }else {
+                       ToastUtils.show(m_Context, "无数据!");
+                   }
+               } catch (JSONException e) {
+                   e.printStackTrace();
+               } finally {
+
+               }
+           }
+
+           @Override
+           public void onError(Throwable ex, boolean isOnCallback) {
+               LogUtils.e("sjt","error");
+               isNotShowLoading(true) ;
+           }
+
+           @Override
+           public void onCancelled(CancelledException cex) {
+
+           }
+
+           @Override
+           public void onFinished() {
+
+           }
+       });
+   }
+
+    /**
+     * 获取最新工况详情
+     * @param uId 用户Id
+     * @param wNo 机井编码
+     */
+    private void getWellDeviceStatusData(String uId, String wNo, String eventType, int typeFlag) {
+        if(uId == null && wNo == null || null == eventType || typeFlag < 0 && typeFlag >= 3) {
+            ToastUtils.show(m_Context, "参数错误!");
+            return;
+        }
+        String url = BASEIP + "/well/queryDeviceStateWarn" ;
+        RequestParams requestParams = new RequestParams(url) ;//网络请求参数实体,设置url
+        if (null != uId) {
+            requestParams.addBodyParameter("userId", uId);   //添加用户Id参数至Body
+        }
+        if (null != wNo) {
+            requestParams.addBodyParameter("wellNo", wNo);   //添加机井编码参数至Body
+        }
+        if (null != eventType) {
+            requestParams.addBodyParameter("eventType", eventType);
+        }
+        if (typeFlag > 0 && typeFlag < 3) {
+            requestParams.addParameter("typeFlag", typeFlag);
+        }
+
+        x.http().post(requestParams, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result) ;//根据返回字段,创建JSONObject
+                    int code = jsonObject.getInt("code") ;
+                    if (code == 1) {
+                        Gson gson = new Gson() ;
+                        String data = jsonObject.getString("result") ;
+                        LogUtils.e("wellDeviceStatus", "返回数据" + data);
+                        m_wDSBeanList.clear();
+                        m_wDSBeanList = gson.fromJson(data, new TypeToken<List<DeviceStatus>>(){}.getType()) ;
+                        LogUtils.e("wDSBeanList:","" + m_wDSBeanList.size()) ;
+                        setWellDeviceStatus() ;//回填最新工况详情
+                    }else {
+                        m_wDSBeanList.clear();
+                        ToastUtils.show(m_Context, "wellDeviceStatus无数据!");
+                        setDeviceStatusGone() ;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } finally {
+
+                }
+            }
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                LogUtils.e("获取最新工况详情","数据请求失败");
+                isNotShowLoading(true) ;
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+            }
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
+
+
+    /**
+     *获取开关泵记录,根据页面获取,每页20条数据
+     * @param wellNo 用户ID
+     */
+    private void getWellInfoOnoffPump(String wellNo) {
+//        if (null == wellNo ||  m_onOffCurrentPage < 0) {
+//            ToastUtils.show(m_Context, "参数为空!");
+//            return;
+//        }
+        String url = BASEIP + "/well/queryWellOnOffRecoder" ;
+        RequestParams requestParams = new RequestParams(url) ;
+        //if (null != wellNo)
+            requestParams.addBodyParameter("wellNo", wellNo);
+       // if (m_onOffCurrentPage >= 0 )
+            requestParams.addParameter("currentPage", 1);//添加请求参数(根据请求谓词, 将参数加入QueryString或Body.
+        requestParams.addParameter("count", 1);
+
+        x.http().post(requestParams, new Callback.CommonCallback<String>(){
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    JSONObject jsonResult = new JSONObject(result) ;
+                    int code = jsonResult.getInt("code") ;
+                    if (code == 1) {
+                        m_onOffBeanList.clear();
+                        Gson gson = new Gson() ;
+                        String data = jsonResult.getString("result") ;
+                        LogUtils.e("onOffPumpRecoder", "返回数据" + data);
+                        m_onOffBeanList = gson.fromJson(data,
+                                new TypeToken<List<OnOffPumpRecoder>>(){}.getType()) ;
+                        setPumpOnOffStatus(m_onOffBeanList.get(0)) ;
+
+                    }else {
+                        //ToastUtils.show(getActivity(),"开泵记录,没有数据!");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } finally {
+
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                ToastUtils.show(m_Context,"网络异常,获取开泵记录失败!");
+                isNotShowLoading(true) ;
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+                ToastUtils.show(m_Context,"开泵记录,onCancelled");
+            }
+
+            @Override
+            public void onFinished() {
+                //ToastUtils.show(getActivity(),"onFinished");
+            }
+        }) ;
+
+    }
+
+
+
+    /**
+     *后台获取井最新工况详情,回填数据
+     */
+    private void setWellDeviceStatus() {
+        for (int i = 0; i < m_wDSBeanList.get(0).getStateType().size(); i++) {
+            getStateType(m_wDSBeanList.get(0), i) ;
+        }
+        if("rtuGood".equals(m_rtuType)) {
+            //rtuGood不显示信息
+            m_rtuStatusIme.setImageResource(R.mipmap.wellinfo_devicestatus_green);
+            adapterView(true, false, false, "RTU正常");
+        }else if("rtuOffLine".equals(m_rtuType)) {
+            //String[] sArray = m_wDSBeanList.get(0).getStateDetail()[0].split(":");
+            m_rtuStatusIme.setImageResource(R.mipmap.wellinfo_devicestatus_red);
+            adapterView(true, false, false, "RTU离线");
+        }else if("rtuLossElec".equals(m_rtuType)) {
+            //String[] sArray = m_wDSBeanList.get(0).getStateDetail()[0].split(":");
+            m_rtuStatusIme.setImageResource(R.mipmap.wellinfo_devicestatus_red);
+            adapterView(true, false, false, "RTU掉电(220v市电停电)");
+        }else if("rtuBatLow".equals(m_rtuType)) {
+            //String[] sArray = m_wDSBeanList.get(0).getStateDetail()[0].split(":");
+            m_rtuStatusIme.setImageResource(R.mipmap.wellinfo_devicestatus_red);
+            adapterView(true, false, false, "RTU蓄电池电压低");
+        }else {
+            adapterView(false, false, false, "") ;
+        }
+
+        if("flowmeterGood".equals(m_flowType)) {
+            /*String[] sArray = m_wDSBeanList.get(0).getStateDetail()[1].split(":");*/
+            m_flowStatusIme.setImageResource(R.mipmap.wellinfo_devicestatus_green);
+            adapterView(false, true, false, "流量计正常");
+        }else if("flowmeterBad".equals(m_flowType)) {
+            //String[] sArray = m_wDSBeanList.get(0).getStateDetail()[1].split(":");
+            m_flowStatusIme.setImageResource(R.mipmap.wellinfo_devicestatus_red);
+            adapterView(false, true, false, "流量计故障");
+        }else if("fmeterVoLow".equals(m_flowType)) {
+            //String[] sArray = m_wDSBeanList.get(0).getStateDetail()[1].split(":");
+            m_flowStatusIme.setImageResource(R.mipmap.wellinfo_devicestatus_red);
+            adapterView(false, true, false, "流量计电压低");
+        }else {
+            adapterView(false, false, false, "") ;
+        }
+
+        if("electMeterGood".equals(m_electType)) {
+            /*String[] sArray = m_wDSBeanList.get(0).getStateDetail()[2].split(":");
+            adapterView(false, false, true, sArray);*/
+            m_electStatusIme.setImageResource(R.mipmap.wellinfo_devicestatus_green);
+            adapterView(false, false, true, "电表正常");
+        }else if("electMeterBad".equals(m_electType)) {
+            //String[] sArray = m_wDSBeanList.get(0).getStateDetail()[2].split(":");
+            m_electStatusIme.setImageResource(R.mipmap.wellinfo_devicestatus_red);
+            adapterView(false, false, true, "电表故障");
+        }else {
+            adapterView(false, false, false, "") ;
+        }
+    }
+
+    /**
+     *适配界面
+     */
+    void adapterView(boolean isRtu, boolean isFlowMeter, boolean isElectMeter,String str) {
+        String info = "";
+        if(isRtu || isFlowMeter || isElectMeter) {
+                /*for (int i = 0; i < sArray.length; i++) {
+                    if (i != 0) {
+                        if (!"null".equals(sArray[i])) {
+                            info += "/" + sArray[i];
+                        }
+                    }else {
+                        if (!"null".equals(sArray[i])) {
+                            info += sArray[i];
+                        }
+                    }
+                }*/
+            info = str ;
+        }else {
+            setDeviceStatusGone();
+        }
+       if (isRtu) {
+           m_rtuStatusIme.setVisibility(View.VISIBLE);
+           m_rtuStatusTitle.setVisibility(View.VISIBLE);
+           m_rtuStatus.setText(info);//显示RTU故障信息
+           m_rtuStatus.setVisibility(View.VISIBLE);
+       }else if (isFlowMeter) {
+           m_flowStatusIme.setVisibility(View.VISIBLE);
+           m_flowStatusTitle.setVisibility(View.VISIBLE);
+           m_flowMeterStatus.setText(info);//显示流量计故障信息
+           m_flowMeterStatus.setVisibility(View.VISIBLE);
+       }else if (isElectMeter) {
+           m_electStatusIme.setVisibility(View.VISIBLE);
+           m_electStatusTitle.setVisibility(View.VISIBLE);
+           m_electMeterStatus.setText(info);//显示电表故障信息
+           m_electMeterStatus.setVisibility(View.VISIBLE);
+       }
+    }
+
+    private void getStateType(DeviceStatus deviceStatus,int position) {
+        if (position >= deviceStatus.getStateType().size())
+            return ;
+        String str = deviceStatus.getStateType().get(position) ;
+        String str1 = deviceStatus.getStateDetail().get(position) ;
+        if ("rtuGood".equals(str)) {
+            m_rtuType ="rtuGood" ;
+            //m_rtuErr = str1 ;
+        }else if ("rtuOffLine".equals(str)) {
+            m_rtuType ="rtuOffLine" ;
+        }else if ("rtuLossElec".equals(str)) {
+            m_rtuType ="rtuLossElec" ;
+        }else if ("rtuBatLow".equals(str)) {
+            m_rtuType ="rtuBatLow" ;
+        }else if ("flowmeterGood".equals(str)) {
+            m_flowType = "flowmeterGood" ;
+        }else if ("flowmeterBad".equals(str)) {
+            m_flowType = "flowmeterBad" ;
+        }else if ("fmeterVoLow".equals(str)) {
+            m_flowType = "fmeterVoLow" ;
+        }else if ("electMeterGood".equals(str)) {
+            m_electType = "electMeterGood" ;
+        }else if ("electMeterBad".equals(str)) {
+            m_electType = "electMeterBad" ;
+        }
+    }
+
+    private void setDeviceStatusGone() {
+        m_rtuStatusIme.setVisibility(View.GONE);
+        m_rtuStatusTitle.setVisibility(View.GONE);
+        m_rtuStatus.setVisibility(View.GONE);
+        m_rtuStatus.setVisibility(View.GONE);
+        m_flowStatusIme.setVisibility(View.GONE);
+        m_flowStatusTitle.setVisibility(View.GONE);
+        m_flowMeterStatus.setVisibility(View.GONE);
+        m_flowMeterStatus.setVisibility(View.GONE);
+        m_electStatusIme.setVisibility(View.GONE);
+        m_electStatusTitle.setVisibility(View.GONE);
+        m_electMeterStatus.setVisibility(View.GONE);
+        m_electMeterStatus.setVisibility(View.GONE);
+    }
+
+    /**
+     * 将对象里的值，在界面显示
+     * @param wellInfo
+     */
+    private void setWellInfoDetailFromSearch(WellInfo wellInfo) {
+        setTitlebar(wellInfo.getWellName());//修改界面头
+        m_wellNo.setText(wellInfo.getWellNo());
+        m_wellName.setText(wellInfo.getWellName());
+        m_wellUser.setText(wellInfo.getAdmin());
+        m_wellAddress.setText(wellInfo.getWellAddress());
+        m_waterSurplus.setText(wellInfo.getRemainWater());
+        m_electSurplus.setText(wellInfo.getRemainElect());
+        m_yearElectConsum.setText(wellInfo.getYearAddupElec());
+        m_yearWaterConsum.setText(wellInfo.getYearAddupWater());
+        m_yearPlanWaterConsum.setText(wellInfo.getYearPlanWater());
+        //设置当前井编码
+        if (wellInfo != null && wellInfo.getWellNo() != null) {
+            currentWellNo = wellInfo.getWellNo();
+        }
+        if(wellInfo!=null&&wellInfo.getWellName()!=null){
+            currentWellName=wellInfo.getWellName();
+        }
+
+        m_wellOnoffStatus = wellInfo.getWellOnOff() ;
+        if (m_wellOnoffStatus == 1) {
+            m_wellOnline = true ;
+        }else {
+            m_wellOnline = false ;
+            m_wi_pumponoff_status.setImageResource(R.mipmap.wellinfo_well_offline);
+            m_pumpWorkStatus.setText("机井不在线");
+        }
+    }
+    public boolean getPumpStatus() {
+        return  m_pumpStatus ;
+    }
+    public void setPumpStatus() {
+        ToastUtils.show(m_Context, "开关泵结果:" + SharepreferenceUtils.getPumpOpResult(m_Context));
+        if (SharepreferenceUtils.getPumpOpResult(m_Context)) {
+            if (m_wellOnline) {
+                if (m_pumpStatus) {
+                    m_pumpStatus = false;
+                    m_wi_pumponoff_status.setImageResource(R.mipmap.wellinfo_pump_open);
+                    m_pumpWorkStatus.setText("水泵停止中");
+                } else {
+                    m_pumpStatus = true;
+                    m_wi_pumponoff_status.setImageResource(R.mipmap.wellinfo_pump_close);
+                    m_pumpWorkStatus.setText("水泵运行中");
+                }
+            }else {
+                m_wi_pumponoff_status.setImageResource(R.mipmap.wellinfo_well_offline);
+                m_pumpWorkStatus.setText("机井不在线");
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    private void setPumpOnOffStatus(OnOffPumpRecoder onOffPumpRecoder) {
+        String pumpOnTime = onOffPumpRecoder.getPumpOnTime() ;
+        String pumpOffTime = onOffPumpRecoder.getPumpOffTime();
+        if (m_wellOnline) {
+            if (null != pumpOnTime && null == pumpOffTime) {
+                m_pumpStatus = true;
+                m_wi_pumponoff_status.setImageResource(R.mipmap.wellinfo_pump_close);
+                m_pumpWorkStatus.setText("水泵运行中");
+            } else if (null != pumpOnTime && null != pumpOffTime) {
+                m_pumpStatus = false;
+                m_wi_pumponoff_status.setImageResource(R.mipmap.wellinfo_pump_open);
+                m_pumpWorkStatus.setText("水泵停止中");
+            }
+        }else {
+            m_wi_pumponoff_status.setImageResource(R.mipmap.wellinfo_well_offline);
+        }
+    }
+}

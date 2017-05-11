@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--背景色-->
+    <solid android:color="@color/titlebar_green"/>
+
+    <!--边框-->
+    <stroke android:width="0.01dp"
+        android:color="@color/background_gray"/>
+
+    <!--内容与边框距离-->
+    <padding android:left="2dp"
+        android:right="2dp"
+        android:top="@dimen/common_drawablePadding5"
+        android:bottom="@dimen/common_drawablePadding5"/>
+
+    <!--圆角-->
+    <corners
+        android:topLeftRadius="@dimen/common_drawablePadding5"
+        android:topRightRadius="@dimen/common_drawablePadding5"
+        android:bottomLeftRadius="@dimen/common_drawablePadding5"
+        android:bottomRightRadius="@dimen/common_drawablePadding5"/>
+</shape>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="#f0eff5"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        style="@style/tab_titlebar">
+
+        <LinearLayout
+            android:layout_width="54dp"
+            android:layout_height="match_parent"
+            android:onClick="onReturnClick"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/imgbtn_back"
+                style="@style/TitleBack"
+                android:layout_gravity="center_vertical"
+                android:focusable="false" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvw_title"
+            style="@style/TitleText"
+            android:text="李村大力镇水光寺麦田井" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:id="@+id/rl_search_bar"
+        android:layout_below="@+id/rl_title"
+        android:background="@color/white"
+        android:orientation="horizontal">
+        <com.automic.app.view.ClearEditText
+            android:layout_width="match_parent"
+            android:id="@+id/edt_search"
+            android:textColorHint="#cdcdcd"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:cursorVisible="true"
+            android:textCursorDrawable="@drawable/shape_cursor_color"
+            android:textColor="@color/black"
+            android:hint="请输入机井编码/名称"
+            android:layout_toLeftOf="@+id/tvw_cancel"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:background="@null"
+            android:imeOptions="actionSearch"
+            android:drawableRight="@drawable/delete_selector"
+            android:textSize="15.0sp"
+            android:layout_height="match_parent" />
+        <!--<EditText-->
+            <!--android:id="@+id/edt_search"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_toLeftOf="@+id/tvw_cancel"-->
+            <!--android:hint="请输入机井编码/名称"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:textColorHint="#cdcdcd" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/tvw_cancel"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginRight="15dp"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:text="取消"-->
+            <!--android:textColor="#999999" />-->
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_below="@+id/rl_search_bar"
+        android:id="@+id/ll_search_bar_s"
+        android:background="@drawable/ic_shadow_6px1"
+        android:layout_height="3dp"></View>
+
+    <LinearLayout
+        android:layout_below="@+id/ll_search_bar_s"
+        android:layout_marginLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_marginTop="7dp"
+        android:layout_marginRight="10dp"
+        android:layout_height="34dp"
+        android:id="@+id/ll_two_select_textview"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/ll_spinner_xiang_warn"
+            android:background="@drawable/ic_shape_corner_shadow6"
+            android:layout_weight="2">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:background="@color/white"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/tvw_spinner_xiang_warn"
+                android:text="选择乡"
+                android:textColor="@color/background_dark_gray"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:layout_width="7.5dp"
+              android:layout_alignParentRight="true"
+                android:layout_marginRight="4dp"
+              android:layout_marginTop="9dp"
+                android:background="@mipmap/ic_down_more"
+                android:layout_height="5dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="3.5dp"
+            android:id="@+id/ll_spinner_cun_warn"
+            android:background="@drawable/ic_shape_corner_shadow6"
+            android:layout_weight="3">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:id="@+id/tvw_spinner_cun_warn"
+                android:text="选择村"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/background_dark_gray"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:layout_width="7.5dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="9dp"
+                android:background="@mipmap/ic_down_more"
+                android:layout_height="5dp" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/rootview"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/ll_two_select_textview"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+    </RelativeLayout>
+</RelativeLayout>

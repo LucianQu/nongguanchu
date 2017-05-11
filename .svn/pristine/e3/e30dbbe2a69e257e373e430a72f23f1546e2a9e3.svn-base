@@ -1,0 +1,41 @@
+package com.automic.app.adapter;
+
+import android.content.Context;
+import android.widget.TextView;
+
+import com.automic.app.R;
+import com.automic.app.bean.OpenBoxRecoder;
+
+import java.util.List;
+
+/**
+ * Created by qulus on 2017/3/30 0030.
+ */
+
+public class OpenBoxAdapter extends BaseTtAdapter<OpenBoxRecoder> {
+    private Context mContext ;
+    public OpenBoxAdapter(Context context, List<OpenBoxRecoder> mList) {
+        super(context, mList);
+        this.mContext = context ;
+        this.setLayoutId(R.layout.item_listview_openbox);
+        int[] ids = {R.id.ob_time, R.id.ob_offBoxTime} ;
+        String fields[] = {"openBoxTime", "closeBoxTime"};
+        this.setClass(ViewHolderOpenBox.class);
+        this.setViewIds(ids);
+        this.setFields(fields);
+    }
+
+    @Override
+    public void addDataToView(OpenBoxRecoder openBoxRecoder, Object o) {
+        if (o instanceof ViewHolderOpenBox) {
+            ((ViewHolderOpenBox) o).openBoxTime.setText(openBoxRecoder.getOccurTime()!=null
+                    ?"" :openBoxRecoder.getOccurTime());
+            ((ViewHolderOpenBox) o).closeBoxTime.setText(openBoxRecoder.getCloseBoxTime()!=null
+            ? "" : openBoxRecoder.getCloseBoxTime());
+        }
+    }
+    static class ViewHolderOpenBox {
+        TextView openBoxTime ;
+        TextView closeBoxTime ;
+    }
+}

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="100dp"
+    android:background="@color/background_white"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/common_drawablePadding20"
+            android:layout_marginLeft="3dip"
+            android:layout_marginRight="3dip"
+            android:text="警告!"
+            android:gravity="center_horizontal"
+            android:textColor="@color/text_color_red"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/common_drawablePadding20"
+        android:layout_marginLeft="3dip"
+        android:layout_marginRight="3dip"
+        android:text="请确认阀门为打开状态!"
+        android:gravity="left"
+        android:textColor="@color/text_color_red"
+        android:textSize="@dimen/text18"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/common_drawablePadding5"
+        android:layout_marginLeft="3dip"
+        android:layout_marginRight="3dip"
+        android:layout_marginBottom="@dimen/common_drawablePadding20"
+        android:text="关闭状态打开水泵会造成设备损坏!"
+        android:gravity="left"
+        android:textColor="@color/text_color_black"
+        android:textSize="@dimen/text18"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+</LinearLayout>

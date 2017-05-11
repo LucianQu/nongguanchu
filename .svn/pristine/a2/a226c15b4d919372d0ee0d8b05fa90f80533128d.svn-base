@@ -1,0 +1,299 @@
+package com.automic.app.utils;
+
+/**
+ * 类注释：
+ * Created by sujingtai on 2017/4/12 0012 下午 3:22
+ */
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
+import com.automic.app.bean.UserInfo;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class SharepreferenceUtils {
+    public static final String PREF_USERID_CHANELID = "Preference_Userid_Channelid";
+    public static final String PREF_USER_INFO = "Preference_User_Info";
+    public static final String PREF_MSG_READTIME = "Preference_Msg_Readtime";
+    public static final String PREF_SETTING_STATE = "Preference_Setting_State";
+    public static final String PREF_LASTMSG_TIME = "preference_lastmsg_time";
+    public static final String PREF_BAIDUPUSHID = "Preference_Baidu_Pushid";
+    public static final String PREF_BN_VERSION = "preference_bn_version";
+    public static final String PREF_SP_VERSION = "preference_sp_version";
+    public static final String PREF_IMG_URL = "preference_img_url";
+    public static final String PREF_USER_DESTROY = "preference_user_destroy";
+    public static final String PREF_PSW_SAVE = "preference_psw_save";
+    public static final String PREF_TIME_SELECT = "preference_time_select";
+    public static final String PREF_REPORTTIME_SELECT = "preference_reporttime_select";
+
+    public static void savePswisSave(Context context, boolean issave) {
+        SharedPreferences preference = context.getSharedPreferences(
+                "preference_psw_save", 0);
+        SharedPreferences.Editor editor = preference.edit();
+        editor.putBoolean("issave", issave);
+        editor.commit();
+    }
+
+    public static boolean getPswisSave(Context context) {
+        SharedPreferences preference = context.getSharedPreferences(
+                "preference_psw_save", 0);
+        boolean issave = preference.getBoolean("issave", false);
+        return issave;
+    }
+
+    public static void saveUserInfo(Context context, UserInfo user) {
+        SharedPreferences preference = context.getSharedPreferences(
+                PREF_USER_INFO, Context.MODE_PRIVATE);
+        Editor editor = preference.edit();
+        editor.putString("usercode", user.getUsername());
+        editor.putString("pass", user.getPassword());
+        editor.putString("app", user.getApp());
+        editor.putString("adId", user.getAdId());
+        editor.putString("unitid", user.getUnitid());
+        editor.putString("deviceId", user.getDeviceId());
+        editor.putString("roleId", user.getRoleId());
+        editor.putString("realName", user.getRealName());
+        editor.commit();
+    }
+
+    public static UserInfo getUserInfo(Context context) {
+        SharedPreferences preference = context.getSharedPreferences(
+                PREF_USER_INFO, Context.MODE_PRIVATE);
+        String usercode = preference.getString("usercode", "");
+        String pass = preference.getString("pass", "");
+        String app = preference.getString("app", "");
+        String adId = preference.getString("adId", "");
+        String unitid = preference.getString("unitid", "");
+        String deviceId = preference.getString("deviceId", "");
+        String roleId = preference.getString("roleId", "");
+        String realName = preference.getString("realName", "");
+
+        UserInfo user = new UserInfo();
+        user.setUsername(usercode);
+        user.setPassword(pass);
+        user.setApp(app);
+        user.setAdId(adId);
+        user.setUnitid(unitid);
+        user.setDeviceId(deviceId);
+        user.setRoleId(roleId);
+        user.setRealName(realName);
+        return user;
+    }
+
+
+    public static void saveMsgReadtime(Context context, long time) {
+        SharedPreferences preference = context.getSharedPreferences(
+                "Preference_Msg_Readtime", 0);
+        SharedPreferences.Editor editor = preference.edit();
+        editor.putLong("readtime", time);
+        editor.commit();
+    }
+
+    public static long getMsgReadtime(Context context) {
+        SharedPreferences preference = context.getSharedPreferences(
+                "Preference_Msg_Readtime", 0);
+        long readtime = preference.getLong("readtime", 0L);
+        return readtime;
+    }
+
+    public static void setControlGuideDisplay(Context context, boolean display) {
+        SharedPreferences sharedPre = context.getSharedPreferences(
+                "com.away.mother.landim", 0);
+        if (sharedPre != null)
+            sharedPre.edit().putBoolean("display", display).commit();
+    }
+
+    public static boolean getControlGuideDisplay(Context context) {
+        SharedPreferences sharedPre = context.getSharedPreferences(
+                "com.away.mother.landim", 0);
+        if (sharedPre != null) {
+            return sharedPre.getBoolean("display", false);
+        }
+        return false;
+    }
+
+    public static void saveLastmsgTime(Context context, long time) {
+        SharedPreferences preference = context.getSharedPreferences(
+                "preference_lastmsg_time", 0);
+        SharedPreferences.Editor editor = preference.edit();
+        editor.putLong("lastmsgtime", time);
+        editor.commit();
+    }
+
+    public static long getLastmsgtime(Context context) {
+        SharedPreferences preference = context.getSharedPreferences(
+                "preference_lastmsg_time", 0);
+        long readtime = preference.getLong("lastmsgtime", 0L);
+        return readtime;
+    }
+
+    public static void saveBnversion(Context context, String version) {
+        SharedPreferences preference = context.getSharedPreferences(
+                "preference_bn_version", 0);
+        SharedPreferences.Editor editor = preference.edit();
+        editor.putString("bnversion", version);
+        editor.commit();
+    }
+
+    public static String getBnversion(Context context) {
+        SharedPreferences preference = context.getSharedPreferences(
+                "preference_bn_version", 0);
+        String bnversion = preference.getString("bnversion", "1");
+        return bnversion;
+    }
+
+    public static void saveUserDestroy(Context context, boolean isDestroy) {
+        SharedPreferences preference = context.getSharedPreferences(
+                "preference_user_destroy", 0);
+        SharedPreferences.Editor editor = preference.edit();
+        editor.putBoolean("isDestroy", isDestroy);
+        editor.commit();
+    }
+
+    public static boolean getUserDestroy(Context context) {
+        SharedPreferences preference = context.getSharedPreferences(
+                "preference_user_destroy", 0);
+        boolean isDestroy = preference.getBoolean("isDestroy", false);
+        return isDestroy;
+    }
+
+    public static void saveSpversion(Context context, String version) {
+        SharedPreferences preference = context.getSharedPreferences(
+                "preference_sp_version", 0);
+        SharedPreferences.Editor editor = preference.edit();
+        editor.putString("spversion", version);
+        editor.commit();
+    }
+
+    public static String getSpversion(Context context) {
+        SharedPreferences preference = context.getSharedPreferences(
+                "preference_sp_version", 0);
+        String spversion = preference.getString("spversion", "1");
+        return spversion;
+    }
+
+    public static void saveImgUrl(Context context, String imgUrl) {
+        SharedPreferences preference = context.getSharedPreferences(
+                "preference_img_url", 0);
+        SharedPreferences.Editor editor = preference.edit();
+        editor.putString("imgUrl", imgUrl);
+        editor.commit();
+    }
+
+    public static String getSpimgUrl(Context context) {
+        SharedPreferences preference = context.getSharedPreferences(
+                "preference_img_url", 0);
+        String spversion = preference.getString("imgUrl", "");
+        return spversion;
+    }
+
+    public static void saveSelectTime(Context context, String stime, String etime) {
+        SharedPreferences preference = context.getSharedPreferences(
+                "preference_time_select", 0);
+        SharedPreferences.Editor editor = preference.edit();
+        editor.putString("stime", stime);
+        editor.putString("etime", etime);
+        editor.commit();
+    }
+
+    public static String[] getSelectTime(Context context) {
+        String[] times = new String[2];
+        SharedPreferences preference = context.getSharedPreferences(
+                "preference_time_select", 0);
+        String stime = preference.getString("stime", "");
+        String etime = preference.getString("etime", "");
+        times[0] = stime;
+        times[1] = etime;
+        return times;
+    }
+
+    public static void saveSelectTime(Context context, int year, int sm, int em, int sd, int ed) {
+        SharedPreferences preference = context.getSharedPreferences(
+                "preference_time_select", 0);
+        SharedPreferences.Editor editor = preference.edit();
+        editor.putInt("year", year);
+        editor.putInt("sm", sm);
+        editor.putInt("em", em);
+        editor.putInt("sd", sd);
+        editor.putInt("ed", ed);
+        editor.commit();
+    }
+
+    public static int[] getReportSelectTime(Context context) {
+        int[] times = new int[5];
+        SharedPreferences preference = context.getSharedPreferences(
+                "preference_time_select", 0);
+        Calendar calendar = Calendar.getInstance();
+
+        int year = preference.getInt("year", 2015);
+        int sm = preference.getInt("sm", 1);
+        int em = preference.getInt("em", 9);
+        int sd = preference.getInt("sd", 1);
+        int ed = preference.getInt("ed", calendar.get(5));
+        times[0] = year;
+        times[1] = sm;
+        times[2] = em;
+        times[3] = sd;
+        times[4] = ed;
+        return times;
+    }
+
+    public static boolean isIdentifier(String content) {
+        String regex = "^[a-zA-Z0-9一-龥]+$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher match = pattern.matcher(content);
+        if (match.matches()) {
+            return true;
+        }
+        return false;
+    }
+
+    public static Screen getScreenPix(Context context) {
+        DisplayMetrics dm = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager) context
+                .getSystemService("window");
+        windowManager.getDefaultDisplay().getMetrics(dm);
+        return new Screen(dm.widthPixels, dm.heightPixels);
+    }
+
+    public static String getCurrentDay() {
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = formatter.format(currentTime);
+        return dateString;
+    }
+
+    public static String getCurrentMonth() {
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM");
+        String dateString = formatter.format(currentTime);
+        return dateString;
+    }
+
+    public static String getCurrentYear() {
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
+        String dateString = formatter.format(currentTime);
+        return dateString;
+    }
+
+    public static class Screen {
+        public int widthPixels;
+        public int heightPixels;
+
+        public Screen(int widthPixels, int heightPixels) {
+            this.widthPixels = widthPixels;
+            this.heightPixels = heightPixels;
+        }
+
+        public String toString() {
+            return "(" + this.widthPixels + "," + this.heightPixels + ")";
+        }
+    }
+}
